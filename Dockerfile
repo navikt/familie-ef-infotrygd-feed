@@ -1,3 +1,3 @@
 FROM navikt/java:11
 
-COPY ./target/familie-ba-infotrygd-feed.jar "app.jar"
+COPY ./target/familie-ef-infotrygd-feed.jar "app.jar"

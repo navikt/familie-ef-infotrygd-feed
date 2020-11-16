@@ -1,5 +1,5 @@
-# familie-ba-infotrygd-feed
-Feed-kommunikasjon mellom Barnetrygd og Infotrygd
+# familie-ef-infotrygd-feed
+Feed-kommunikasjon mellom Enslig forsørger og Infotrygd
 
 # Kjøring lokalt
 `DevLauncher` kjører appen lokalt med Spring-profilen `dev` satt. Appen tilgjengeliggjøres da på `localhost:8092`.  
@@ -10,11 +10,11 @@ Dersom man vil kjøre med postgres, kan man bytte til Spring-profilen `postgres`
  `-Dspring.profiles.active=postgres` under Edit Configurations -> VM Options.
 Da må man sette opp postgres-databasen, dette gjøres slik:
 ```
-docker run --name familie-ba-infotrygd-feed -e POSTGRES_PASSWORD=test -d -p 5432:5432 postgres
+docker run --name familie-ef-infotrygd-feed -e POSTGRES_PASSWORD=test -d -p 5432:5432 postgres
 docker ps (finn container id)
 docker exec -it <container_id> bash
 psql -U postgres
-CREATE DATABASE "familie-ba-infotrygd-feed";
+CREATE DATABASE "familie-ef-infotrygd-feed";
 ```
 
 ## Produksjonssetting

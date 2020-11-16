@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: familie-ba-infotrygd-feed
+  name: familie-ef-infotrygd-feed
   namespace: default
   labels:
     team: teamfamilie
@@ -23,7 +23,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /azuread/data/dev/creds/familie-ba-infotrygd-feed
+      - kvPath: /azuread/data/dev/creds/familie-ef-infotrygd-feed
         mountPath: /var/run/secrets/nais.io/azuread
   replicas:
     min: 1
@@ -37,8 +37,8 @@ spec:
       memory: 512Mi
       cpu: 200m
   ingresses:
-    - https://familie-ba-infotrygd-feed.nais.preprod.local
-    - https://familie-ba-infotrygd-feed.dev-fss.nais.io
+    - https://familie-ef-infotrygd-feed.nais.preprod.local
+    - https://familie-ef-infotrygd-feed.dev-fss.nais.io
   secureLogs:
     enabled: true
   env:

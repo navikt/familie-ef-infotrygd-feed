@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: familie-ba-infotrygd-feed
+  name: familie-ef-infotrygd-feed
   namespace: default
   labels:
     team: teamfamilie
@@ -23,7 +23,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: /azuread/data/prod/creds/familie-ba-infotrygd-feed
+      - kvPath: /azuread/data/prod/creds/familie-ef-infotrygd-feed
         mountPath: /var/run/secrets/nais.io/azuread
   replicas:
     min: 1
@@ -39,7 +39,7 @@ spec:
   secureLogs:
     enabled: true
   ingresses:
-    - https://familie-ba-infotrygd-feed.nais.adeo.no
+    - https://familie-ef-infotrygd-feed.nais.adeo.no
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: prod

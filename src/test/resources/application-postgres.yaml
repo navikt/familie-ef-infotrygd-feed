@@ -5,7 +5,7 @@ no.nav.security.jwt:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/familie-ba-infotrygd-feed
+    url: jdbc:postgresql://localhost:5432/familie-ef-infotrygd-feed
     password: test
     username: postgres
   flyway:

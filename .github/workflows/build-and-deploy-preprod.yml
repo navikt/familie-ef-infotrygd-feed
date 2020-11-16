@@ -3,7 +3,7 @@ on:
   push:
   pull_request:
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/familie-ba-infotrygd-feed:${{ github.sha }}
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/familie-ef-infotrygd-feed:${{ github.sha }}
 jobs:
   deploy-to-dev:
     name: Bygg app/image, push til github, deploy til dev-fss
