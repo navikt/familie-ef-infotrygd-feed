@@ -1,7 +1,7 @@
 package no.nav.familie.ef.infotrygd.feed.service
 
-import no.nav.familie.ba.infotrygd.feed.database.DbContainerInitializer
-import no.nav.familie.ba.infotrygd.feed.rest.dto.Type
+import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
+import no.nav.familie.ef.infotrygd.feed.rest.dto.Type
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test

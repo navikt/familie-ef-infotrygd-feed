@@ -1,9 +1,9 @@
 package no.nav.familie.ef.infotrygd.feed.rest
 
-import no.nav.familie.ba.infotrygd.feed.rest.dto.FødselsDto
-import no.nav.familie.ba.infotrygd.feed.rest.dto.VedtakDto
-import no.nav.familie.ba.infotrygd.feed.rest.dto.Type
-import no.nav.familie.ba.infotrygd.feed.service.InfotrygdFeedService
+import no.nav.familie.ef.infotrygd.feed.rest.dto.FødselsDto
+import no.nav.familie.ef.infotrygd.feed.rest.dto.VedtakDto
+import no.nav.familie.ef.infotrygd.feed.rest.dto.Type
+import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpStatus

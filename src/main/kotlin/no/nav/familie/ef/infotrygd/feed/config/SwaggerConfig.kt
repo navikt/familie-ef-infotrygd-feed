@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 class SwaggerConfig {
 
 
-    private val basePackage = "no.nav.familie.ba.infotrygd.feed"
+    private val basePackage = "no.nav.familie.ef.infotrygd.feed"
 
     private val bearer = "Bearer"
     /**

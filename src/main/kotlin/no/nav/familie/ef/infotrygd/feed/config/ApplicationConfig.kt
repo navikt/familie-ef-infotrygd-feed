@@ -28,6 +28,6 @@ class ApplicationConfig {
 
     companion object {
         private val log = LoggerFactory.getLogger(ApplicationConfig::class.java)
-        const val pakkenavn = "no.nav.familie.ba.infotrygd.feed"
+        const val pakkenavn = "no.nav.familie.ef.infotrygd.feed"
     }
 }

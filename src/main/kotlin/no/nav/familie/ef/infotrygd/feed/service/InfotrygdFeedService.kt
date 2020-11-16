@@ -1,8 +1,8 @@
 package no.nav.familie.ef.infotrygd.feed.service
 
-import no.nav.familie.ba.infotrygd.feed.database.Feed
-import no.nav.familie.ba.infotrygd.feed.database.FeedRepository
-import no.nav.familie.ba.infotrygd.feed.rest.dto.Type
+import no.nav.familie.ef.infotrygd.feed.database.Feed
+import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
+import no.nav.familie.ef.infotrygd.feed.rest.dto.Type
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.time.LocalDate

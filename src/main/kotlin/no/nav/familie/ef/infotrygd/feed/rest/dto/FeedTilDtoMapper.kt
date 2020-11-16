@@ -1,6 +1,6 @@
 package no.nav.familie.ef.infotrygd.feed.rest.dto
 
-import no.nav.familie.ba.infotrygd.feed.database.Feed
+import no.nav.familie.ef.infotrygd.feed.database.Feed
 import java.time.LocalDateTime
 
 

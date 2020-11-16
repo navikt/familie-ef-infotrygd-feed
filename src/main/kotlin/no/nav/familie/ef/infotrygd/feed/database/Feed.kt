@@ -1,6 +1,6 @@
 package no.nav.familie.ef.infotrygd.feed.database
 
-import no.nav.familie.ba.infotrygd.feed.rest.dto.Type
+import no.nav.familie.ef.infotrygd.feed.rest.dto.Type
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*

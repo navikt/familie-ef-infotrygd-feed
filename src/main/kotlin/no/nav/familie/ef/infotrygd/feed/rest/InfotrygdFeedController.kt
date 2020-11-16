@@ -2,9 +2,9 @@ package no.nav.familie.ef.infotrygd.feed.rest
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import no.nav.familie.ba.infotrygd.feed.rest.dto.FeedMeldingDto
-import no.nav.familie.ba.infotrygd.feed.rest.dto.konverterTilFeedMeldingDto
-import no.nav.familie.ba.infotrygd.feed.service.InfotrygdFeedService
+import no.nav.familie.ef.infotrygd.feed.rest.dto.FeedMeldingDto
+import no.nav.familie.ef.infotrygd.feed.rest.dto.konverterTilFeedMeldingDto
+import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus

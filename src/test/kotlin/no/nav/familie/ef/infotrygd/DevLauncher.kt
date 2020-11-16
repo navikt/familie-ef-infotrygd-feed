@@ -3,7 +3,7 @@ package no.nav.familie.ef.infotrygd
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
-@SpringBootApplication(scanBasePackages = ["no.nav.familie.ba.infotrygd.feed"])
+@SpringBootApplication(scanBasePackages = ["no.nav.familie.ef.infotrygd.feed"])
 class DevLauncher
 
 fun main(args: Array<String>) {
