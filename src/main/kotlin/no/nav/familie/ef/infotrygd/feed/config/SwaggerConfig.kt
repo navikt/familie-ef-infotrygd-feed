@@ -12,16 +12,14 @@ import springfox.documentation.service.SecurityReference
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
-import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 @Configuration
-@EnableSwagger2
 class SwaggerConfig {
-
 
     private val basePackage = "no.nav.familie.ef.infotrygd.feed"
 
     private val bearer = "Bearer"
+
     /**
      * Builder and primary interface of swagger-spring framework.
      */
@@ -44,9 +42,9 @@ class SwaggerConfig {
 
     private fun securityContext(): List<SecurityContext> {
         return listOf(SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex("/api.*"))
-                .build())
+                              .securityReferences(defaultAuth())
+                              .forPaths(PathSelectors.regex("/api.*"))
+                              .build())
     }
 
     private fun defaultAuth(): List<SecurityReference> {
