@@ -1,5 +1,5 @@
 CREATE TABLE FEED (
-    SEKVENS_ID bigint primary key,
+    SEKVENS_ID BIGSERIAL primary key,
     FNR_BARN varchar,
     FNR_STONADSMOTTAKER varchar,
     FNR_MOR varchar,

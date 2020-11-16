@@ -29,7 +29,7 @@ class InfotrygdFeedServiceIntegrationTest {
         infotrygdFeedService.opprettNyFeed(type = Type.BA_Foedsel_v1, fnrBarn = fnrBarn)
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
-        Assertions.assertNotNull(feeds.find { it.type == Type.BA_Foedsel_v1 && it.fnrBarn == fnrBarn && it.duplikat == false})
+        Assertions.assertNotNull(feeds.find { it.type == Type.BA_Foedsel_v1 && it.fnrBarn == fnrBarn && it.erDuplikat == false})
     }
 
     @Test

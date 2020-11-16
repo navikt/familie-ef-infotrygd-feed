@@ -17,7 +17,7 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
             datoStartNyBA: LocalDate? = null
     ) {
         val erDuplikat = type.takeIf { it == Type.BA_Foedsel_v1 }
-                ?.let { feedRepository.erDuplikatFoedselsmelding(type, fnrBarn!!) }
+                ?.let { feedRepository.countByTypeAndFnrBarn(type, fnrBarn!!) > 0 }
                 ?: false
 
         feedRepository.save(
@@ -26,11 +26,11 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                         fnrBarn = fnrBarn,
                         fnrStonadsmottaker = fnrStonadsmottaker,
                         datoStartNyBa = datoStartNyBA,
-                        duplikat = erDuplikat,
+                        erDuplikat = erDuplikat,
                         opprettetDato = LocalDateTime.now()
                 ))
     }
 
     fun hentMeldingerFraFeed(sistLestSekvensId: Long, maxSize: Int = 100): List<Feed> =
-            feedRepository.finnMeldingerMedSekvensIdStørreEnn(PageRequest.of(0, maxSize), sistLestSekvensId)
+            feedRepository.findByErDuplikatIsFalseAndSekvensIdGreaterThanOrderBySekvensIdAsc(PageRequest.of(0, maxSize), sistLestSekvensId)
 }
