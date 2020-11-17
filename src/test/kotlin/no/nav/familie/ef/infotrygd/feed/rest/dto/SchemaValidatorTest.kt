@@ -64,7 +64,7 @@ class SchemaValidatorTest {
                 inneholderFlereElementer = false,
                 elementer = listOf(
                         FeedElement(
-                                innhold = InnholdVedtak(datoStartNyBA = LocalDate.now(), fnrStoenadsmottaker = fnrStoenadsmottaker),
+                                innhold = Innhold(startdato = LocalDate.now(), fnr = fnrStoenadsmottaker),
                                 metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
                                 sekvensId = 42,
                                 type = Type.BA_Vedtak_v1
@@ -79,7 +79,7 @@ class SchemaValidatorTest {
         }
 
     private fun hentFeedSchema(): String {
-        val inputStream = this::class.java.classLoader.getResourceAsStream("schema/barnetrygd-feed-schema.json")
+        val inputStream = this::class.java.classLoader.getResourceAsStream("schema/ensligforsorger-feed-schema.json")
         return String(inputStream!!.readAllBytes(), Charset.forName("UTF-8"))
     }
 }

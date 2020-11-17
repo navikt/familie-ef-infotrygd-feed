@@ -1,11 +1,8 @@
-CREATE TABLE FEED (
-    SEKVENS_ID BIGSERIAL primary key,
-    FNR_BARN varchar,
-    FNR_STONADSMOTTAKER varchar,
-    FNR_MOR varchar,
-    FNR_FAR varchar,
-    DATO_START_NY_BA timestamp(3),
-    TYPE varchar not null
+CREATE TABLE FEED
+(
+    sekvens_id     SERIAL PRIMARY KEY,
+    type           VARCHAR      NOT NULL,
+    fnr            VARCHAR      NOT NULL,
+    startdato      TIMESTAMP(3) NOT NULL,
+    opprettet_dato TIMESTAMP(3) NOT NULL
 );
-
-CREATE SEQUENCE FEED_SEQ INCREMENT BY 1 NO CYCLE;

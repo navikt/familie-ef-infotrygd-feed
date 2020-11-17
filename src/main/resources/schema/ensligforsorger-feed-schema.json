@@ -1,5 +1,5 @@
 {
-  "$id": "http://no.nav.familie.ba.infotrygd.feed",
+  "$id": "http://no.nav.familie.ef.infotrygd.feed",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
@@ -29,11 +29,12 @@
             "type": "string",
             "title": "Type forretningshendelse",
             "examples": [
-              "BA_Foedsel_v1"
+              "EF_Vedtak_Skolepenger_v1"
             ],
             "enum": [
-              "BA_Vedtak_v1",
-              "BA_Foedsel_v1"
+              "EF_Vedtak_OvergStoenad_v1",
+              "EF_Vedtak_Barnetilsyn_v1",
+              "EF_Vedtak_Skolepenger_v1"
             ]
           },
           "sekvensId": {
@@ -68,39 +69,24 @@
             "type": "object",
             "properties": {
               "fnrStoenadsmottaker": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/fnrStoenadsmottaker",
+                "$id": "/properties/elementer/items/properties/innhold/properties/fnr",
                 "type": "string",
                 "pattern": "^([0-9]{11})$",
                 "title": "Fnr for den som mottar stønaden"
               },
-              "datoStartNyBA": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/datoStartNyBA",
+              "datoStartNyEF": {
+                "$id": "/properties/elementer/items/properties/innhold/properties/startdato",
                 "type": "string",
                 "format": "date",
                 "title": "Første dato stønad utbetales fra ny løsning",
                 "examples": [
                   "2018-04-18"
                 ]
-              },
-              "fnrBarn": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/fnrBarn",
-                "type": "string",
-                "pattern": "^([0-9]{11})$",
-                "title": "Fnr for mottakende barn"
               }
             },
-            "oneOf": [
-              {
-                "required": [
-                  "fnrStoenadsmottaker",
-                  "datoStartNyBA"
-                ]
-              },
-              {
-                "required": [
-                  "fnrBarn"
-                ]
-              }
+            "required": [
+              "fnr",
+              "startdato"
             ]
           }
         }

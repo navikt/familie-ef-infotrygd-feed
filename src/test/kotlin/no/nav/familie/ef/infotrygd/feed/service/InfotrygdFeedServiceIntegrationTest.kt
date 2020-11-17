@@ -46,18 +46,18 @@ class InfotrygdFeedServiceIntegrationTest {
     @Test
     fun `Verifiser at alle duplikat av vedtak hentes fra database`() {
         val fnrStonadsmottaker = "12345678913"
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1,  datoStartNyBA = LocalDate.now(), fnrStonadsmottaker = fnrStonadsmottaker)
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1,  datoStartNyBA = LocalDate.now(), fnrStonadsmottaker = fnrStonadsmottaker)
+        infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1, datoStartNyEF = LocalDate.now(), fnr = fnrStonadsmottaker)
+        infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1, datoStartNyEF = LocalDate.now(), fnr = fnrStonadsmottaker)
 
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
-        Assertions.assertEquals(2, feeds.filter { it.fnrStonadsmottaker == fnrStonadsmottaker }.size)
+        Assertions.assertEquals(2, feeds.filter { it.fnr == fnrStonadsmottaker }.size)
     }
 
     @Test
     fun `Verifiser at maks definert antall feeds blir returnert`() {
         val fnrStonadsmottaker = "10000000000"
-        for (i in 1..3) infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1,  datoStartNyBA = LocalDate.now(), fnrStonadsmottaker = fnrStonadsmottaker + i)
+        for (i in 1..3) infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1, datoStartNyEF = LocalDate.now(), fnr = fnrStonadsmottaker + i)
 
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0, 2)
 

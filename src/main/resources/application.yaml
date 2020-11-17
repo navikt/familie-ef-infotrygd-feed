@@ -10,19 +10,16 @@ spring:
   autoconfigure.exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   main.banner-mode: "off"
   datasource:
+    url: jdbc:postgresql://A01DBVL014.adeo.no:5432/familie-ef-infotrygd-feed
     hikari:
       maximum-pool-size: 2
       connection-test-query: "select 1"
       max-lifetime: 30000
       minimum-idle: 1
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        dialect: "org.hibernate.dialect.PostgreSQL95Dialect"
-        temp:
-          use_jdbc_metadata_defaults: false
+  data:
+    jdbc:
+      repositories:
+        enabled: true
   flyway:
     enabled: true
 
@@ -32,3 +29,17 @@ management:
     exposure.include: info, health, metrics, prometheus
     base-path: "/internal"
   metrics.export.prometheus.enabled: true
+
+no.nav.security.jwt:
+  issuer.sts:
+    discoveryurl: ${STS_DISCOVERY_URL}
+    accepted_audience: ${GYLDIG_SERVICE_BRUKER}
+  issuer.azuread:
+    discoveryurl: ${AZUREAD_DISCOVERY_URL}
+    accepted_audience: ${AZURE_CLIENT_ID}
+    proxyurl: http://webproxy-nais.nav.no:8088
+    cookie_name: azure_token
+
+
+STS_DISCOVERY_URL: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration
+AZUREAD_DISCOVERY_URL: https://login.microsoftonline.com/navno.onmicrosoft.com/v2.0/.well-known/openid-configuration

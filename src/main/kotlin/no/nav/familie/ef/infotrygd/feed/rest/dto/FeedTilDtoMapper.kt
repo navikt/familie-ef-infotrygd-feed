@@ -1,22 +1,17 @@
 package no.nav.familie.ef.infotrygd.feed.rest.dto
 
 import no.nav.familie.ef.infotrygd.feed.database.Feed
-import java.time.LocalDateTime
-
 
 fun konverterTilFeedMeldingDto(feedListe: List<Feed>): FeedMeldingDto =
         FeedMeldingDto(
-                tittel = "Barnetrygd feed",
+                tittel = "Enslig forsørger feed",
                 inneholderFlereElementer = feedListe.size > 1,
                 elementer = feedListe.map {
                     FeedElement(
                             metadata = ElementMetadata(opprettetDato = it.opprettetDato),
-                            innhold =
-                            if (it.type == Type.BA_Vedtak_v1)
-                                InnholdVedtak(datoStartNyBA = it.datoStartNyBa!!, fnrStoenadsmottaker = it.fnrStonadsmottaker!!)
-                            else
-                                InnholdFødsel(fnrBarn = it.fnrBarn!!),
-                            sekvensId = it.sekvensId.toInt(),
+                            innhold = Innhold(startdato = it.startdato,
+                                              fnr = it.fnr),
+                            sekvensId = it.sekvensId,
                             type = it.type
                     )
                 })

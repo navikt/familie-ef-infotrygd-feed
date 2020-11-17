@@ -7,17 +7,17 @@ import no.nav.familie.ef.infotrygd.feed.rest.dto.konverterTilFeedMeldingDto
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/barnetrygd")
+@RequestMapping("/api/v1/feed")
 @ProtectedWithClaims(issuer = "sts")
 class InfotrygdFeedController(private val infotrygdFeedService: InfotrygdFeedService) {
+
+    private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Operation(
             summary = "Hent liste med hendelser.",
@@ -27,24 +27,11 @@ class InfotrygdFeedController(private val infotrygdFeedService: InfotrygdFeedSer
     fun feed(
             @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
             @RequestParam("sistLesteSekvensId") sekvensnummer: Long
-    ): ResponseEntity<FeedMeldingDto> =
-            Result.runCatching {
+    ): FeedMeldingDto {
+        val konverterTilFeedMeldingDto =
                 konverterTilFeedMeldingDto(infotrygdFeedService.hentMeldingerFraFeed(sistLestSekvensId = sekvensnummer))
-            }.fold(
-                    onSuccess = {
-                        log.info("Hentet ${it.elementer.size} feeds fra sekvensnummer $sekvensnummer")
-
-                        ResponseEntity.ok(it)
-                    },
-                    onFailure = {
-                        log.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
-
-                        ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-                    }
-            )
-
-    companion object {
-        private val log = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
+        logger.info("Hentet ${konverterTilFeedMeldingDto.elementer.size} feeds fra sekvensnummer $sekvensnummer")
+        return konverterTilFeedMeldingDto
     }
+
 }

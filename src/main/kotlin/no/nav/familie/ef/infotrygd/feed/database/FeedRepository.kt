@@ -14,5 +14,4 @@ interface FeedRepository : CrudRepository<Feed, Long> {
     /*@Query(value = "SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false end FROM Feed f WHERE f.type = :type AND f.fnrBarn = :fnrBarn")
     fun erDuplikatFoedselsmelding(type: Type, fnrBarn: String): Boolean*/
 
-    fun countByTypeAndFnrBarn(type: Type, fnrBarn: String): Long
 }

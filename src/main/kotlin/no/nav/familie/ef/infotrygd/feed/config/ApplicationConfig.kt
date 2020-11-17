@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan
 
 @SpringBootConfiguration
 @ConfigurationPropertiesScan
-@EnableJwtTokenValidation(ignore = ["org.springframework","springfox.documentation.swagger"])
+@EnableJwtTokenValidation(ignore = ["org.springframework", "springfox.documentation.swagger"])
 @ComponentScan(ApplicationConfig.pakkenavn)
 class ApplicationConfig {
 
@@ -25,6 +25,7 @@ class ApplicationConfig {
     }
 
     companion object {
+
         private val log = LoggerFactory.getLogger(ApplicationConfig::class.java)
         const val pakkenavn = "no.nav.familie.ef.infotrygd.feed"
     }

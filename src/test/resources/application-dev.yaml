@@ -7,15 +7,4 @@ no.nav.security.jwt:
     accepted_audience: ${CLIENT_ID}
     cookie_name: azure_token
 
-spring:
-  jpa:
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql=false
-    hibernate:
-      ddl-auto: create
-  flyway:
-    enabled: false
-
 logging.level.no.nav.security: DEBUG
