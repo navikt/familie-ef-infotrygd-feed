@@ -32,9 +32,12 @@
               "EF_Vedtak_Skolepenger_v1"
             ],
             "enum": [
-              "EF_Vedtak_OvergStoenad_v1",
-              "EF_Vedtak_Barnetilsyn_v1",
-              "EF_Vedtak_Skolepenger_v1"
+              "EF_Vedtak_Skolepenger",
+              "EF_StartBeh_Skolepenger",
+              "EF_Vedtak_OvergStoenad",
+              "EF_StartBeh_OvergStoenad",
+              "EF_Vedtak_Barnetilsyn",
+              "EF_StartBeh_Barnetilsyn"
             ]
           },
           "sekvensId": {
@@ -68,17 +71,17 @@
             "$id": "/properties/elementer/items/properties/innhold",
             "type": "object",
             "properties": {
-              "fnrStoenadsmottaker": {
+              "fnr": {
                 "$id": "/properties/elementer/items/properties/innhold/properties/fnr",
                 "type": "string",
                 "pattern": "^([0-9]{11})$",
                 "title": "Fnr for den som mottar stønaden"
               },
               "datoStartNyEF": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/startdato",
+                "$id": "/properties/elementer/items/properties/innhold/properties/startDatoNyEF",
                 "type": "string",
                 "format": "date",
-                "title": "Første dato stønad utbetales fra ny løsning",
+                "title": "Første dato stønad utbetales fra ny løsning", //TODO ?? Både for vedtak og start behandling ?
                 "examples": [
                   "2018-04-18"
                 ]
@@ -86,7 +89,7 @@
             },
             "required": [
               "fnr",
-              "startdato"
+              "datoStartNyEF"
             ]
           }
         }

@@ -64,7 +64,7 @@ class SchemaValidatorTest {
                 inneholderFlereElementer = false,
                 elementer = listOf(
                         FeedElement(
-                                innhold = Innhold(startdato = LocalDate.now(), fnr = fnrStoenadsmottaker),
+                                innhold = Innhold(datoStartNyEF = LocalDate.now(), fnr = fnrStoenadsmottaker),
                                 metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
                                 sekvensId = 42,
                                 type = Type.BA_Vedtak_v1

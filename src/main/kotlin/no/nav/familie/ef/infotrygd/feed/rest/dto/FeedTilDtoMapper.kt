@@ -9,7 +9,7 @@ fun konverterTilFeedMeldingDto(feedListe: List<Feed>): FeedMeldingDto =
                 elementer = feedListe.map {
                     FeedElement(
                             metadata = ElementMetadata(opprettetDato = it.opprettetDato),
-                            innhold = Innhold(startdato = it.startdato,
+                            innhold = Innhold(datoStartNyEF = it.startdato,
                                               fnr = it.fnr),
                             sekvensId = it.sekvensId,
                             type = it.type

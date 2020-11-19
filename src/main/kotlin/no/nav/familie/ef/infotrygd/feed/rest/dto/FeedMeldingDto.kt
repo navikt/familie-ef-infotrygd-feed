@@ -14,10 +14,15 @@ data class FeedElement(val innhold: Innhold,
 
 data class ElementMetadata(val opprettetDato: LocalDateTime) // TODO: NB K9 bruker java.time.OffSetDateTime her
 
-data class Innhold(val fnr: String, val startdato: LocalDate)
+data class Innhold(val fnr: String, val datoStartNyEF: LocalDate)
 
 enum class Type(infotrygdType: String) {
-    SKOLEPENGER("EF_Vedtak_Skolepenger_v1"),
-    OVERGANGSSTØNAD("EF_Vedtak_OvergStoenad_v1"),
-    BARNETILSYN("EF_Vedtak_Barnetilsyn_v1");
+    SKOLEPENGER_VEDTAK("EF_Vedtak_Skolepenger"),
+    SKOLEPENGER_START_BEHANDLING("EF_StartBeh_Skolepenger"),
+
+    OVERGANGSSTØNAD_VEDTAK("EF_Vedtak_OvergStoenad"),
+    OVERGANGSSTØNAD_START_BEHANDLING("EF_StartBeh_OvergStoenad"),
+
+    BARNETILSYN_VEDTAK("EF_Vedtak_Barnetilsyn"),
+    BARNETILSYN_START_BEHANDLING("EF_StartBeh_Barnetilsyn");
 }
