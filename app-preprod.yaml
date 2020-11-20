@@ -37,7 +37,6 @@ spec:
     - https://familie-ef-infotrygd-feed.dev.adeo.no
   secureLogs:
     enabled: true
-  webproxy: true
   azure:
     application:
       enabled: true

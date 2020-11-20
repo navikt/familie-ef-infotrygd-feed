@@ -37,7 +37,6 @@ spec:
     enabled: true
   ingresses:
     - https://familie-ef-infotrygd-feed.nais.adeo.no
-  webproxy: true
   azure:
     application:
       enabled: true
