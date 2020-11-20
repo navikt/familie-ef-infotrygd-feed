@@ -10,7 +10,7 @@ spring:
   autoconfigure.exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   main.banner-mode: "off"
   datasource:
-    url: jdbc:postgresql://A01DBVL014.adeo.no:5432/familie-ef-infotrygd-feed
+    url: jdbc:postgresql://A01DBVL020.adeo.no:5432/familie-ef-infotrygd-feed
     hikari:
       maximum-pool-size: 2
       connection-test-query: "select 1"
@@ -35,11 +35,10 @@ no.nav.security.jwt:
     discoveryurl: ${STS_DISCOVERY_URL}
     accepted_audience: ${GYLDIG_SERVICE_BRUKER}
   issuer.azuread:
-    discoveryurl: ${AZUREAD_DISCOVERY_URL}
-    accepted_audience: ${AZURE_CLIENT_ID}
+    discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
+    accepted_audience: ${AZURE_APP_CLIENT_ID}
     proxyurl: http://webproxy-nais.nav.no:8088
     cookie_name: azure_token
 
 
 STS_DISCOVERY_URL: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration
-AZUREAD_DISCOVERY_URL: https://login.microsoftonline.com/navno.onmicrosoft.com/v2.0/.well-known/openid-configuration

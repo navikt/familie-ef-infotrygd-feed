@@ -40,8 +40,10 @@ spec:
     enabled: true
   ingresses:
     - https://familie-ef-infotrygd-feed.nais.adeo.no
+  webproxy: true
+  azure:
+    application:
+      enabled: true
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: prod
-    - name: AZURE_CLIENT_ID
-      value: /run/secrets/nais.io/azuread/client_id

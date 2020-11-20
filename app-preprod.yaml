@@ -37,12 +37,13 @@ spec:
       memory: 512Mi
       cpu: 200m
   ingresses:
-    - https://familie-ef-infotrygd-feed.nais.preprod.local
-    - https://familie-ef-infotrygd-feed.dev-fss.nais.io
+    - https://familie-ef-infotrygd-feed.dev.adeo.no
   secureLogs:
     enabled: true
+  webproxy: true
+  azure:
+    application:
+      enabled: true
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: preprod
-    - name: AZURE_CLIENT_ID
-      value: /run/secrets/nais.io/azuread/client_id
