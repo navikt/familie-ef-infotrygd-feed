@@ -64,7 +64,7 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
 
     private fun loggFeil(throwable: Throwable, loggMelding: String) {
         when (throwable) {
-            is JwtTokenUnauthorizedException -> logger.debug(loggMelding)
+            is JwtTokenUnauthorizedException -> logger.error(loggMelding, throwable)
             else -> logger.error(loggMelding)
         }
     }

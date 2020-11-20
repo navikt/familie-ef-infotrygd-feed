@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.networknt.schema.JsonSchema
 import com.networknt.schema.JsonSchemaFactory
 import com.networknt.schema.SpecVersion
+import no.nav.familie.kontrakter.ef.infotrygd.InfotrygdHendelseType
 import no.nav.familie.kontrakter.felles.objectMapper
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset
@@ -14,60 +16,57 @@ import java.time.LocalDateTime
 class SchemaValidatorTest {
 
     @Test
-    fun `Dto for fødsel validerer mot schema`() {
-        val node = objectMapper.valueToTree<JsonNode>(testDtoForFødsel())
+    fun `Dto for startBehandling validerer mot schema`() {
+        val node = objectMapper.valueToTree<JsonNode>(testDtoForStartBehandling())
         val feilListe = schema.validate(node)
-        Assertions.assertTrue(feilListe.isEmpty())
+        assertThat(feilListe).isEmpty()
     }
 
     @Test
     fun `Dto for vedtak validerer mot schema`() {
         val node = objectMapper.valueToTree<JsonNode>(testDtoForVedtak())
         val feilListe = schema.validate(node)
-        Assertions.assertTrue(feilListe.isEmpty())
+        assertThat(feilListe).isEmpty()
     }
 
     @Test
-    fun `Dto for fødsel validerer ikke dersom fnrBarn har feil format`() {
-        val node = objectMapper.valueToTree<JsonNode>(testDtoForFødsel("123456"))
+    fun `Dto for startBehandling validerer ikke dersom fnrBarn har feil format`() {
+        val node = objectMapper.valueToTree<JsonNode>(testDtoForStartBehandling("123456"))
         val feilListe = schema.validate(node)
-        Assertions.assertEquals(1, feilListe.size)
+        assertThat(feilListe).hasSize(1)
     }
 
     @Test
     fun `Dto for vedtak validerer ikke dersom fnrStoenadsmottaker har feil format`() {
         val node = objectMapper.valueToTree<JsonNode>(testDtoForVedtak("123456"))
         val feilListe = schema.validate(node)
-        Assertions.assertEquals(1, feilListe.size)
+        assertThat(feilListe).hasSize(1)
     }
 
-
-    private fun testDtoForFødsel(fnr: String = "12345678910"): FeedMeldingDto {
-
-        return FeedMeldingDto(
+    private fun testDtoForVedtak(fnr: String = "12345678910"): FeedDto {
+        return FeedDto(
                 tittel = "Feed schema validator test",
                 inneholderFlereElementer = false,
                 elementer = listOf(
                         FeedElement(
-                                InnholdFødsel(fnrBarn = fnr),
+                                innhold = VedtakInnhold(fnr = fnr, startdatoVedtakEF = LocalDate.now()),
                                 metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
                                 sekvensId = 42,
-                                type = Type.BA_Foedsel_v1
+                                type = InfotrygdHendelseType.EF_Vedtak_OvergStoenad
                         ))
         )
     }
 
-    private fun testDtoForVedtak(fnrStoenadsmottaker: String =  "12345678910"): FeedMeldingDto {
-
-        return FeedMeldingDto(
+    private fun testDtoForStartBehandling(fnr: String = "12345678910"): FeedDto {
+        return FeedDto(
                 tittel = "Feed schema validator test",
                 inneholderFlereElementer = false,
                 elementer = listOf(
                         FeedElement(
-                                innhold = Innhold(datoStartNyEF = LocalDate.now(), fnr = fnrStoenadsmottaker),
+                                innhold = StartBehandlingInnhold(fnr = fnr),
                                 metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
                                 sekvensId = 42,
-                                type = Type.BA_Vedtak_v1
+                                type = InfotrygdHendelseType.EF_StartBeh_OvergStoenad
                         ))
         )
     }

@@ -1,10 +1,11 @@
 package no.nav.familie.ef.infotrygd.feed.service
 
 import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
-import no.nav.familie.ef.infotrygd.feed.rest.dto.Type
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
+import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
+import no.nav.familie.kontrakter.ef.infotrygd.InfotrygdHendelseType
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,44 +21,50 @@ import java.time.LocalDate
 @Tag("integration")
 class InfotrygdFeedServiceIntegrationTest {
 
-    @Autowired
-    lateinit var infotrygdFeedService: InfotrygdFeedService
+    @Autowired lateinit var infotrygdFeedService: InfotrygdFeedService
 
-    @Test
-    fun `Hent feeds fra database`() {
-        val fnrBarn = "12345678911"
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Foedsel_v1, fnrBarn = fnrBarn)
-        val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
+    @Autowired lateinit var feedRepository: FeedRepository
 
-        Assertions.assertNotNull(feeds.find { it.type == Type.BA_Foedsel_v1 && it.fnrBarn == fnrBarn && it.erDuplikat == false})
+    @BeforeEach
+    internal fun setUp() {
+        feedRepository.deleteAll()
     }
 
     @Test
-    fun `Verifiser at duplikat av fødselesmleding ikke hentes fra database`() {
-        val fnrBarn = "12345678912"
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Foedsel_v1, fnrBarn = fnrBarn)
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Foedsel_v1, fnrBarn = fnrBarn)
-
+    fun `Vedtak - Hent feeds fra database`() {
+        val fnr = "12345678911"
+        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(type = InfotrygdHendelseType.EF_Vedtak_OvergStoenad,
+                                                                    fnr = fnr,
+                                                                    startdato = LocalDate.now()))
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
-        Assertions.assertEquals(1, feeds.filter { it.fnrBarn == fnrBarn }.size)
+        Assertions.assertNotNull(feeds.find {
+            it.type == InfotrygdHendelseType.EF_Vedtak_OvergStoenad
+            && it.fnr == fnr
+        })
     }
 
     @Test
-    fun `Verifiser at alle duplikat av vedtak hentes fra database`() {
-        val fnrStonadsmottaker = "12345678913"
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1, datoStartNyEF = LocalDate.now(), fnr = fnrStonadsmottaker)
-        infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1, datoStartNyEF = LocalDate.now(), fnr = fnrStonadsmottaker)
-
+    fun `StartBehandling - Hent feeds fra database`() {
+        val fnr = "12345678911"
+        infotrygdFeedService.opprettNyFeed(
+                OpprettStartBehandlingHendelseDto(type = InfotrygdHendelseType.EF_StartBeh_OvergStoenad,
+                                                  fnr = fnr))
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
-        Assertions.assertEquals(2, feeds.filter { it.fnr == fnrStonadsmottaker }.size)
+        Assertions.assertNotNull(feeds.find {
+            it.type == InfotrygdHendelseType.EF_StartBeh_OvergStoenad
+            && it.fnr == fnr
+        })
     }
 
     @Test
     fun `Verifiser at maks definert antall feeds blir returnert`() {
         val fnrStonadsmottaker = "10000000000"
-        for (i in 1..3) infotrygdFeedService.opprettNyFeed(type = Type.BA_Vedtak_v1, datoStartNyEF = LocalDate.now(), fnr = fnrStonadsmottaker + i)
+        for (i in 1..3) infotrygdFeedService.opprettNyFeed(
+                OpprettVedtakHendelseDto(type = InfotrygdHendelseType.EF_Vedtak_OvergStoenad,
+                                         fnr = fnrStonadsmottaker + i,
+                                         startdato = LocalDate.now()))
 
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0, 2)
 

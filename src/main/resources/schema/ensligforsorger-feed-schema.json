@@ -77,19 +77,18 @@
                 "pattern": "^([0-9]{11})$",
                 "title": "Fnr for den som mottar stønaden"
               },
-              "datoStartNyEF": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/startDatoNyEF",
+              "startdatoVedtakEF": {
+                "$id": "/properties/elementer/items/properties/innhold/properties/startdatoVedtakEF",
                 "type": "string",
                 "format": "date",
-                "title": "Første dato stønad utbetales fra ny løsning", //TODO ?? Både for vedtak og start behandling ?
+                "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
                 "examples": [
                   "2018-04-18"
                 ]
               }
             },
             "required": [
-              "fnr",
-              "datoStartNyEF"
+              "fnr"
             ]
           }
         }
