@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConditionalOnProperty("spring.flyway.enabled")
+@ConditionalOnProperty("spring.cloud.vault.database.enabled")
 class FlywayConfiguration {
 
     @Bean

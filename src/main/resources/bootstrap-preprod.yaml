@@ -22,7 +22,3 @@ spring:
         backend: kv/preprod/fss
         application-name: familie-ef-infotrygd-feed/default
         default-context: familie-ef-infotrygd-feed/default
-    discovery:
-      client:
-        composite-indicator:
-          enabled: false
