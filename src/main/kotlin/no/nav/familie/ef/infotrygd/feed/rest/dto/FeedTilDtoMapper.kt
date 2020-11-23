@@ -10,10 +10,11 @@ fun konverterTilFeedMeldingDto(feedListe: List<Feed>): FeedDto =
                     FeedElement(
                             metadata = ElementMetadata(opprettetDato = it.opprettetDato),
                             innhold =
-                            if (it.type.erVedtak())
-                                VedtakInnhold(fnr = it.fnr, startdatoVedtakEF = it.startdato!!)
-                            else
-                                StartBehandlingInnhold(fnr = it.fnr),
+                            when {
+                                it.type.erVedtak() -> VedtakInnhold(fnr = it.fnr, startdatoVedtakEF = it.startdato!!)
+                                it.type.erStartBehandling() -> StartBehandlingInnhold(fnr = it.fnr)
+                                else -> throw IllegalStateException("Finner ikke mapping for ${it.type}")
+                            },
                             sekvensId = it.sekvensId,
                             type = it.type
                     )

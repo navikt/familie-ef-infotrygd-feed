@@ -24,3 +24,8 @@ fun InfotrygdHendelseType.erVedtak() =
         this == InfotrygdHendelseType.EF_Vedtak_Skolepenger
         || this == InfotrygdHendelseType.EF_Vedtak_OvergStoenad
         || this == InfotrygdHendelseType.EF_Vedtak_Barnetilsyn
+
+fun InfotrygdHendelseType.erStartBehandling() =
+        this == InfotrygdHendelseType.EF_StartBeh_Skolepenger
+        || this == InfotrygdHendelseType.EF_StartBeh_OvergStoenad
+        || this == InfotrygdHendelseType.EF_StartBeh_Barnetilsyn

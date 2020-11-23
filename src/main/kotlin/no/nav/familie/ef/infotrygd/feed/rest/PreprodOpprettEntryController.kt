@@ -1,5 +1,6 @@
 package no.nav.familie.ef.infotrygd.feed.rest
 
+import no.nav.familie.ef.infotrygd.feed.rest.dto.erStartBehandling
 import no.nav.familie.ef.infotrygd.feed.rest.dto.erVedtak
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Profile("preprod")
-@RequestMapping("/api/preprod")
+@RequestMapping("/api/preprod",
+                consumes = [MediaType.APPLICATION_JSON_VALUE],
+                produces = [MediaType.APPLICATION_JSON_VALUE])
 @ProtectedWithClaims(issuer = "sts")
 class PreprodOpprettEntryController(private val infotrygdFeedService: InfotrygdFeedService) {
 
-    @PostMapping("/vedtak",
-                 consumes = [MediaType.APPLICATION_JSON_VALUE],
-                 produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/vedtak")
     fun lagNyVedtaksMelding(@RequestBody opprettEntryDto: OpprettVedtakHendelseDto): ResponseEntity<Any> {
         if (!opprettEntryDto.type.erVedtak()) {
             return ResponseEntity.badRequest().build()
@@ -30,11 +31,9 @@ class PreprodOpprettEntryController(private val infotrygdFeedService: InfotrygdF
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping("/start-behandling",
-                 consumes = [MediaType.APPLICATION_JSON_VALUE],
-                 produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/start-behandling")
     fun lagNyStartBehandlingMelding(@RequestBody opprettEntryDto: OpprettStartBehandlingHendelseDto): ResponseEntity<Any> {
-        if (opprettEntryDto.type.erVedtak()) {
+        if (!opprettEntryDto.type.erStartBehandling()) {
             return ResponseEntity.badRequest().build()
         }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -27,7 +26,6 @@ import java.time.LocalDate
 @ContextConfiguration(initializers = [DbContainerInitializer::class])
 @ActiveProfiles("postgres")
 @Tag("integration")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 internal class InfotrygdFeedControllerTest {
 
     @Autowired private lateinit var infotrygdFeedController: InfotrygdFeedController

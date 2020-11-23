@@ -4,6 +4,9 @@ Feed-kommunikasjon mellom Enslig forsørger og Infotrygd
 # Kjøring lokalt
 `DevLauncher` kjører appen lokalt med Spring-profilen `dev` satt. Appen tilgjengeliggjøres da på `localhost:8092`.  
 
+## Swagger
+http://localhost:8092/swagger-ui/index.html
+
 ### Database
 
 Dersom man vil kjøre med postgres, kan man bytte til Spring-profilen `postgres`. Dette kan feks gjøres ved å sette
