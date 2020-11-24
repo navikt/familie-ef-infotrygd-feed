@@ -13,7 +13,7 @@ data class FeedElement(val innhold: Innhold,
                        val sekvensId: Int,
                        val type: InfotrygdHendelseType)
 
-data class ElementMetadata(val opprettetDato: LocalDateTime) // TODO: NB K9 bruker java.time.OffSetDateTime her
+data class ElementMetadata(val opprettetDato: LocalDateTime)
 
 interface Innhold
 
