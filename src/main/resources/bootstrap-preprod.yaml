@@ -10,19 +10,15 @@ spring:
         lifecycle.enabled: true
       database:
         enabled: true
-        role: familie-ba-infotrygd-feed-admin
+        role: familie-ef-infotrygd-feed-admin
         backend: postgresql/preprod-fss
       authentication: KUBERNETES
       kubernetes:
-        role: familie-ba-infotrygd-feed
+        role: familie-ef-infotrygd-feed
         kubernetes-path: kubernetes/preprod/fss
         service-account-token-file: /var/run/secrets/kubernetes.io/serviceaccount/token
       generic:
         enabled: true
         backend: kv/preprod/fss
-        application-name: familie-ba-infotrygd-feed/default
-        default-context: familie-ba-infotrygd-feed/default
-    discovery:
-      client:
-        composite-indicator:
-          enabled: false
+        application-name: familie-ef-infotrygd-feed/default
+        default-context: familie-ef-infotrygd-feed/default

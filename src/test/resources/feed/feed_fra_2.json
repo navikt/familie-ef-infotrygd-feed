@@ -1,0 +1,14 @@
+{
+  "elementer" : [ {
+    "innhold" : {
+      "fnr" : "12345678901"
+    },
+    "metadata" : {
+      "opprettetDato" : "2020-01-01T00:00:00"
+    },
+    "sekvensId" : 3,
+    "type" : "EF_StartBeh_OvergStoenad"
+  } ],
+  "inneholderFlereElementer" : false,
+  "tittel" : "Enslig forsørger feed"
+}

@@ -1,3 +1,3 @@
 FROM navikt/java:11
-
-COPY ./target/familie-ba-infotrygd-feed.jar "app.jar"
+ENV APP_NAME=familie-ef-infotrygd-feed
+COPY ./target/familie-ef-infotrygd-feed.jar "app.jar"
