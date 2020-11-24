@@ -1,15 +1,12 @@
 {
-  "$id": "http://no.nav.familie.ef.infotrygd.feed",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
     "tittel": {
-      "$id": "/properties/tittel",
       "type": "string",
       "title": "Tittel på JSON-feeden"
     },
     "inneholderFlereElementer": {
-      "$id": "/properties/inneholderFlereElementer",
       "type": "boolean",
       "title": "Har feeden flere elementer ",
       "default": false,
@@ -18,30 +15,11 @@
       ]
     },
     "elementer": {
-      "$id": "/properties/elementer",
       "type": "array",
       "items": {
-        "$id": "/properties/elementer/items",
         "type": "object",
         "properties": {
-          "type": {
-            "$id": "/properties/elementer/items/properties/type",
-            "type": "string",
-            "title": "Type forretningshendelse",
-            "examples": [
-              "EF_Vedtak_Skolepenger_v1"
-            ],
-            "enum": [
-              "EF_Vedtak_Skolepenger",
-              "EF_StartBeh_Skolepenger",
-              "EF_Vedtak_OvergStoenad",
-              "EF_StartBeh_OvergStoenad",
-              "EF_Vedtak_Barnetilsyn",
-              "EF_StartBeh_Barnetilsyn"
-            ]
-          },
           "sekvensId": {
-            "$id": "/properties/elementer/items/properties/sekvensId",
             "type": "integer",
             "title": "Sekvensnummer",
             "description": "Unik løpenummer for feeden. Stigende rekkefølge. Det kan være hull i rekkefølgen",
@@ -49,12 +27,19 @@
               1
             ]
           },
+          "fnr": {
+            "type": "string",
+            "pattern": "^([0-9]{11})$",
+            "title": "Fnr for den som mottar stønaden"
+          },
+          "saksnummer": {
+            "type": "integer",
+            "title": "Fagsak extern id for typen og fnr"
+          },
           "metadata": {
-            "$id": "/properties/elementer/items/properties/metadata",
             "type": "object",
             "properties": {
               "opprettetDato": {
-                "$id": "/properties/elementer/items/properties/metadata/properties/opprettetDato",
                 "type": "string",
                 "format": "date-time",
                 "title": "Tidspunkt hendelsen var opprettet i feeden",
@@ -68,41 +53,119 @@
             ]
           },
           "innhold": {
-            "$id": "/properties/elementer/items/properties/innhold",
-            "type": "object",
-            "properties": {
-              "fnr": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/fnr",
-                "type": "string",
-                "pattern": "^([0-9]{11})$",
-                "title": "Fnr for den som mottar stønaden"
+            "oneOf": [
+              {
+                "$ref": "#/definitions/startBehandling"
               },
-              "startdatoVedtakEF": {
-                "$id": "/properties/elementer/items/properties/innhold/properties/startdatoVedtakEF",
-                "type": "string",
-                "format": "date",
-                "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
-                "examples": [
-                  "2018-04-18"
-                ]
+              {
+                "$ref": "#/definitions/vedtak"
+              },
+              {
+                "$ref": "#/definitions/periode"
               }
-            },
-            "required": [
-              "fnr"
             ]
           }
-        }
-      },
-      "required": [
-        "type",
-        "sekvensId",
-        "metadata",
-        "innhold"
-      ]
+        },
+        "required": [
+          "fnr",
+          "sekvensId",
+          "saksnummer",
+          "metadata",
+          "innhold"
+        ]
+      }
     }
   },
   "required": [
     "tittel",
+    "inneholderFlereElementer",
     "elementer"
-  ]
+  ],
+  "definitions": {
+    "vedtak": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Type vedtak",
+          "examples": [
+            "EF_Vedtak_Skolepenger"
+          ],
+          "enum": [
+            "EF_Vedtak_Skolepenger",
+            "EF_Vedtak_OvergStoenad",
+            "EF_Vedtak_Barnetilsyn"
+          ]
+        },
+        "startdatoVedtakEF": {
+          "type": "string",
+          "format": "date",
+          "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
+          "examples": [
+            "2018-04-18"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "startdatoVedtakEF"
+      ]
+    },
+    "startBehandling": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Type vedtak",
+          "examples": [
+            "EF_StartBeh_Skolepenger"
+          ],
+          "enum": [
+            "EF_StartBeh_Skolepenger",
+            "EF_StartBeh_OvergStoenad",
+            "EF_StartBeh_Barnetilsyn"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "periode": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Type vedtak",
+          "examples": [
+            "EF_Periode_OvergStoenad"
+          ],
+          "enum": [
+            "EF_Periode_OvergStoenad"
+          ]
+        },
+        "periodestart": {
+          "type": "string",
+          "format": "date",
+          "title": "Startdato for perioden",
+          "examples": [
+            "2018-04-18"
+          ]
+        },
+        "periodeslutt": {
+          "type": "string",
+          "format": "date",
+          "title": "Sluttdato for perioden",
+          "examples": [
+            "2018-04-18"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "periodestart",
+        "periodeslutt"
+      ]
+    }
+  }
 }
