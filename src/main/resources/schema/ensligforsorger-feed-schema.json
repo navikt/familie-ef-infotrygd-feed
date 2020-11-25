@@ -52,7 +52,7 @@
     },
     "saksnummer": {
       "type": "integer",
-      "title": "Fagsak extern id for typen og fnr"
+      "title": "Fagsak extern id"
     },
     "metadata": {
       "type": "object",
