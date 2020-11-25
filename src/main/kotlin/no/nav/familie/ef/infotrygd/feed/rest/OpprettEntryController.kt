@@ -1,8 +1,7 @@
 package no.nav.familie.ef.infotrygd.feed.rest
 
-import no.nav.familie.ef.infotrygd.feed.rest.dto.erStartBehandling
-import no.nav.familie.ef.infotrygd.feed.rest.dto.erVedtak
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
 import no.nav.security.token.support.core.api.ProtectedWithClaims
@@ -22,18 +21,18 @@ class OpprettEntryController(private val infotrygdFeedService: InfotrygdFeedServ
 
     @PostMapping("/vedtak")
     fun lagNyVedtaksMelding(@RequestBody opprettEntryDto: OpprettVedtakHendelseDto): ResponseEntity<Any> {
-        if (!opprettEntryDto.type.erVedtak()) {
-            return ResponseEntity.badRequest().build()
-        }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/start-behandling")
     fun lagNyStartBehandlingMelding(@RequestBody opprettEntryDto: OpprettStartBehandlingHendelseDto): ResponseEntity<Any> {
-        if (!opprettEntryDto.type.erStartBehandling()) {
-            return ResponseEntity.badRequest().build()
-        }
+        infotrygdFeedService.opprettNyFeed(opprettEntryDto)
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/periode")
+    fun lagNyStartBehandlingMelding(@RequestBody opprettEntryDto: OpprettPeriodeHendelseDto): ResponseEntity<Any> {
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         return ResponseEntity.ok().build()
     }

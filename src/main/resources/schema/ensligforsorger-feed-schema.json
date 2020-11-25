@@ -17,61 +17,16 @@
     "elementer": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "sekvensId": {
-            "type": "integer",
-            "title": "Sekvensnummer",
-            "description": "Unik løpenummer for feeden. Stigende rekkefølge. Det kan være hull i rekkefølgen",
-            "examples": [
-              1
-            ]
+        "oneOf": [
+          {
+            "$ref": "#/definitions/vedtak"
           },
-          "fnr": {
-            "type": "string",
-            "pattern": "^([0-9]{11})$",
-            "title": "Fnr for den som mottar stønaden"
+          {
+            "$ref": "#/definitions/startBehandling"
           },
-          "saksnummer": {
-            "type": "integer",
-            "title": "Fagsak extern id for typen og fnr"
-          },
-          "metadata": {
-            "type": "object",
-            "properties": {
-              "opprettetDato": {
-                "type": "string",
-                "format": "date-time",
-                "title": "Tidspunkt hendelsen var opprettet i feeden",
-                "examples": [
-                  "2018-04-18T09:03:29.202"
-                ]
-              }
-            },
-            "required": [
-              "opprettetDato"
-            ]
-          },
-          "innhold": {
-            "oneOf": [
-              {
-                "$ref": "#/definitions/startBehandling"
-              },
-              {
-                "$ref": "#/definitions/vedtak"
-              },
-              {
-                "$ref": "#/definitions/periode"
-              }
-            ]
+          {
+            "$ref": "#/definitions/periode"
           }
-        },
-        "required": [
-          "fnr",
-          "sekvensId",
-          "saksnummer",
-          "metadata",
-          "innhold"
         ]
       }
     }
@@ -82,8 +37,52 @@
     "elementer"
   ],
   "definitions": {
-    "vedtak": {
+    "sekvensId": {
+      "type": "integer",
+      "title": "Sekvensnummer",
+      "description": "Unik løpenummer for feeden. Stigende rekkefølge. Det kan være hull i rekkefølgen",
+      "examples": [
+        1
+      ]
+    },
+    "fnr": {
+      "type": "string",
+      "pattern": "^([0-9]{11})$",
+      "title": "Fnr for den som mottar stønaden"
+    },
+    "saksnummer": {
+      "type": "integer",
+      "title": "Fagsak extern id for typen og fnr"
+    },
+    "metadata": {
+      "type": "object",
       "properties": {
+        "opprettetDato": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Tidspunkt hendelsen var opprettet i feeden",
+          "examples": [
+            "2018-04-18T09:03:29.202"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "opprettetDato"
+      ]
+    },
+    "vedtak": {
+      "type": "object",
+      "properties": {
+        "sekvensId": {
+          "$ref": "#/definitions/sekvensId"
+        },
+        "saksnummer": {
+          "$ref": "#/definitions/saksnummer"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
         "type": {
           "type": "string",
           "title": "Type vedtak",
@@ -96,23 +95,49 @@
             "EF_Vedtak_Barnetilsyn"
           ]
         },
-        "startdatoVedtakEF": {
-          "type": "string",
-          "format": "date",
-          "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
-          "examples": [
-            "2018-04-18"
+        "innhold": {
+          "type": "object",
+          "properties": {
+            "fnr": {
+              "$ref": "#/definitions/fnr"
+            },
+            "startdatoVedtakEF": {
+              "type": "string",
+              "format": "date",
+              "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
+              "examples": [
+                "2018-04-18"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fnr",
+            "startdatoVedtakEF"
           ]
         }
       },
-      "additionalProperties": false,
       "required": [
+        "sekvensId",
+        "saksnummer",
+        "metadata",
         "type",
-        "startdatoVedtakEF"
-      ]
+        "innhold"
+      ],
+      "additionalProperties": false
     },
     "startBehandling": {
+      "type": "object",
       "properties": {
+        "sekvensId": {
+          "$ref": "#/definitions/sekvensId"
+        },
+        "saksnummer": {
+          "$ref": "#/definitions/saksnummer"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
         "type": {
           "type": "string",
           "title": "Type vedtak",
@@ -124,15 +149,41 @@
             "EF_StartBeh_OvergStoenad",
             "EF_StartBeh_Barnetilsyn"
           ]
+        },
+        "innhold": {
+          "type": "object",
+          "properties": {
+            "fnr": {
+              "$ref": "#/definitions/fnr"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fnr"
+          ]
         }
       },
-      "additionalProperties": false,
       "required": [
-        "type"
-      ]
+        "sekvensId",
+        "saksnummer",
+        "metadata",
+        "type",
+        "innhold"
+      ],
+      "additionalProperties": false
     },
     "periode": {
+      "type": "object",
       "properties": {
+        "sekvensId": {
+          "$ref": "#/definitions/sekvensId"
+        },
+        "saksnummer": {
+          "$ref": "#/definitions/saksnummer"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
         "type": {
           "type": "string",
           "title": "Type vedtak",
@@ -143,29 +194,45 @@
             "EF_Periode_OvergStoenad"
           ]
         },
-        "periodestart": {
-          "type": "string",
-          "format": "date",
-          "title": "Startdato for perioden",
-          "examples": [
-            "2018-04-18"
-          ]
-        },
-        "periodeslutt": {
-          "type": "string",
-          "format": "date",
-          "title": "Sluttdato for perioden",
-          "examples": [
-            "2018-04-18"
+        "innhold": {
+          "type": "object",
+          "properties": {
+            "fnr": {
+              "$ref": "#/definitions/fnr"
+            },
+            "periodestart": {
+              "type": "string",
+              "format": "date",
+              "title": "Startdato for perioden",
+              "examples": [
+                "2018-04-18"
+              ]
+            },
+            "periodeslutt": {
+              "type": "string",
+              "format": "date",
+              "title": "Sluttdato for perioden",
+              "examples": [
+                "2018-04-18"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fnr",
+            "periodestart",
+            "periodeslutt"
           ]
         }
       },
-      "additionalProperties": false,
       "required": [
+        "sekvensId",
+        "saksnummer",
+        "metadata",
         "type",
-        "periodestart",
-        "periodeslutt"
-      ]
+        "innhold"
+      ],
+      "additionalProperties": false
     }
   }
 }
