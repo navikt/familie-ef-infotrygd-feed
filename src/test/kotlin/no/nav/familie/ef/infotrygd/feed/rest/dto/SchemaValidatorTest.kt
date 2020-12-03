@@ -29,13 +29,6 @@ class SchemaValidatorTest {
     }
 
     @Test
-    fun `Dto for periode validerer mot schema`() {
-        val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriodeBehandling())
-        val feilListe = schema.validate(node)
-        assertThat(feilListe).isEmpty()
-    }
-
-    @Test
     fun `Dto for startBehandling validerer ikke dersom fnrBarn har feil format`() {
         val node = objectMapper.valueToTree<JsonNode>(testDtoForStartBehandling("123456"))
         val feilListe = schema.validate(node)
@@ -77,16 +70,6 @@ class SchemaValidatorTest {
     }
 
     @Test
-    fun `Skal feile feil InfotrygdHendelsetype - Periode`() {
-        val filter = setOf(EF_Periode_OvergStoenad)
-        for(type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
-            val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriodeBehandling(type = type))
-            val feilListe = schema.validate(node)
-            assertThat(feilListe).isNotEmpty
-        }
-    }
-
-    @Test
     fun `SchemaValidering vedtak`() {
         val type = "EF_Vedtak_Skolepenger"
         val innhold = mapOf(
@@ -100,17 +83,6 @@ class SchemaValidatorTest {
     fun `SchemaValidering start behandling`() {
         val type = "EF_StartBeh_Skolepenger"
         val innhold = mapOf("fnr" to "12312312311")
-        validerSkjema(type, innhold)
-    }
-
-    @Test
-    fun `SchemaValidering periode`() {
-        val type = "EF_Periode_OvergStoenad"
-        val innhold = mapOf(
-                "fnr" to "12312312311",
-                "periodestart" to "2020-01-01",
-                "periodeslutt" to "2020-01-01"
-        )
         validerSkjema(type, innhold)
     }
 

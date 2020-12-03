@@ -33,10 +33,4 @@ class PreprodOpprettEntryController(private val infotrygdFeedService: InfotrygdF
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping("/periode")
-    fun lagNyStartBehandlingMelding(@RequestBody opprettEntryDto: OpprettPeriodeHendelseDto): ResponseEntity<Any> {
-        infotrygdFeedService.opprettNyFeed(opprettEntryDto)
-        return ResponseEntity.ok().build()
-    }
-
 }

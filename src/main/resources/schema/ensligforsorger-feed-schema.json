@@ -23,9 +23,6 @@
           },
           {
             "$ref": "#/definitions/startBehandling"
-          },
-          {
-            "$ref": "#/definitions/periode"
           }
         ]
       }
@@ -160,68 +157,6 @@
           "additionalProperties": false,
           "required": [
             "fnr"
-          ]
-        }
-      },
-      "required": [
-        "sekvensId",
-        "saksnummer",
-        "metadata",
-        "type",
-        "innhold"
-      ],
-      "additionalProperties": false
-    },
-    "periode": {
-      "type": "object",
-      "properties": {
-        "sekvensId": {
-          "$ref": "#/definitions/sekvensId"
-        },
-        "saksnummer": {
-          "$ref": "#/definitions/saksnummer"
-        },
-        "metadata": {
-          "$ref": "#/definitions/metadata"
-        },
-        "type": {
-          "type": "string",
-          "title": "Type vedtak",
-          "examples": [
-            "EF_Periode_OvergStoenad"
-          ],
-          "enum": [
-            "EF_Periode_OvergStoenad"
-          ]
-        },
-        "innhold": {
-          "type": "object",
-          "properties": {
-            "fnr": {
-              "$ref": "#/definitions/fnr"
-            },
-            "periodestart": {
-              "type": "string",
-              "format": "date",
-              "title": "Startdato for perioden",
-              "examples": [
-                "2018-04-18"
-              ]
-            },
-            "periodeslutt": {
-              "type": "string",
-              "format": "date",
-              "title": "Sluttdato for perioden",
-              "examples": [
-                "2018-04-18"
-              ]
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "fnr",
-            "periodestart",
-            "periodeslutt"
           ]
         }
       },

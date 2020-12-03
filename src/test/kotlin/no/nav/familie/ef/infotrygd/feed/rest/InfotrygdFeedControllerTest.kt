@@ -2,9 +2,7 @@ package no.nav.familie.ef.infotrygd.feed.rest
 
 import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
 import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
-import no.nav.familie.ef.infotrygd.feed.rest.dto.InfotrygdHendelseType
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
-import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.StønadType
@@ -47,7 +45,6 @@ internal class InfotrygdFeedControllerTest {
         opprettVedtak("12345678901", StønadType.OVERGANGSSTØNAD)
         opprettVedtak("12345678901", StønadType.SKOLEPENGER)
         opprettStartBehandling("12345678901", StønadType.OVERGANGSSTØNAD)
-        opprettPeriodeBehandling("12345678901", StønadType.OVERGANGSSTØNAD)
 
         assertThat(hentFeed(0))
                 .isEqualTo(readExpected(0))
@@ -75,9 +72,5 @@ internal class InfotrygdFeedControllerTest {
 
     private fun opprettStartBehandling(fnr: String, type: StønadType) {
         infotrygdFeedService.opprettNyFeed(OpprettStartBehandlingHendelseDto(fnr, 1, type))
-    }
-
-    private fun opprettPeriodeBehandling(fnr: String, type: StønadType) {
-        infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(fnr, 1, type, LocalDate.now(), LocalDate.now()))
     }
 }

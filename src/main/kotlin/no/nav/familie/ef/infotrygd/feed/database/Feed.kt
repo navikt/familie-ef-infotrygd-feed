@@ -14,11 +14,9 @@ data class Feed(@Id
                 val stønad: StønadType,
                 var fnr: String,
                 var startdato: LocalDate?,
-                var sluttdato: LocalDate?,
                 var opprettetDato: LocalDateTime = LocalDateTime.now())
 
 enum class HendelseType {
     VEDTAK,
     START_BEHANDLING,
-    PERIODE
 }

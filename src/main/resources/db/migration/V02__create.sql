@@ -7,6 +7,5 @@ CREATE TABLE FEED
     stonad         VARCHAR      NOT NULL,
     fnr            VARCHAR      NOT NULL,
     startdato      DATE,
-    sluttdato      DATE,
     opprettet_dato TIMESTAMP(3) NOT NULL
 );

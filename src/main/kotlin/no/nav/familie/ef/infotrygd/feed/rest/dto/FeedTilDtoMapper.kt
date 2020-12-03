@@ -22,7 +22,6 @@ private fun mapInnhold(it: Feed) =
         when (it.type) {
             HendelseType.VEDTAK -> VedtakInnhold(it.fnr, it.startdato!!)
             HendelseType.START_BEHANDLING -> StartBehandlingInnhold(it.fnr)
-            HendelseType.PERIODE -> PeriodeInnhold(it.fnr, it.startdato!!, it.sluttdato!!)
         }
 
 private fun mapHendelseType(hendelseType: HendelseType, stønadType: StønadType) =
@@ -37,10 +36,5 @@ private fun mapHendelseType(hendelseType: HendelseType, stønadType: StønadType
                 StønadType.OVERGANGSSTØNAD -> InfotrygdHendelseType.EF_StartBeh_OvergStoenad
                 StønadType.SKOLEPENGER -> InfotrygdHendelseType.EF_StartBeh_Skolepenger
             }
-            HendelseType.PERIODE -> when (stønadType) {
-                StønadType.OVERGANGSSTØNAD -> InfotrygdHendelseType.EF_Periode_OvergStoenad
-                else -> throw IllegalStateException("Kan ikke mappe periode med $stønadType")
-            }
-
         }
 
