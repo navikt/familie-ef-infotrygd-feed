@@ -1,7 +1,6 @@
 package no.nav.familie.ef.infotrygd.feed.rest
 
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
-import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
 import no.nav.security.token.support.core.api.ProtectedWithClaims
