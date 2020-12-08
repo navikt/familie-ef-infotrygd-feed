@@ -1,8 +1,10 @@
 package no.nav.familie.ef.infotrygd.feed.rest
 
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.StønadType
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.context.annotation.Profile
 import org.springframework.http.MediaType
@@ -28,6 +30,15 @@ class PreprodOpprettEntryController(private val infotrygdFeedService: InfotrygdF
 
     @PostMapping("/start-behandling")
     fun lagNyStartBehandlingMelding(@RequestBody opprettEntryDto: OpprettStartBehandlingHendelseDto): ResponseEntity<Any> {
+        infotrygdFeedService.opprettNyFeed(opprettEntryDto)
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/periode")
+    fun lagNyPeriodeMelding(@RequestBody opprettEntryDto: OpprettPeriodeHendelseDto): ResponseEntity<Any> {
+        if (opprettEntryDto.type != StønadType.OVERGANGSSTØNAD) {
+            return ResponseEntity.badRequest().body("Har ikke satt opp mappinger for andre typer enn for overgangsstønad")
+        }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         return ResponseEntity.ok().build()
     }

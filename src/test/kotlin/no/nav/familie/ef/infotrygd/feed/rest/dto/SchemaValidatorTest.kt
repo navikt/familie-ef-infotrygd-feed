@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.networknt.schema.JsonSchema
 import com.networknt.schema.JsonSchemaFactory
 import com.networknt.schema.SpecVersion
+import com.networknt.schema.ValidationMessage
 import no.nav.familie.ef.infotrygd.feed.rest.dto.InfotrygdHendelseType.*
 import no.nav.familie.kontrakter.felles.objectMapper
 import org.assertj.core.api.Assertions.assertThat
@@ -29,6 +30,20 @@ class SchemaValidatorTest {
     }
 
     @Test
+    fun `Dto for periode validerer mot schema`() {
+        val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriode())
+        val feilListe = schema.validate(node)
+        assertThat(feilListe).isEmpty()
+    }
+
+    @Test
+    fun `Dto for annulert periode validerer mot schema`() {
+        val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriodeAnnulert())
+        val feilListe = schema.validate(node)
+        assertThat(feilListe).isEmpty()
+    }
+
+    @Test
     fun `Dto for startBehandling validerer ikke dersom fnrBarn har feil format`() {
         val node = objectMapper.valueToTree<JsonNode>(testDtoForStartBehandling("123456"))
         val feilListe = schema.validate(node)
@@ -44,7 +59,14 @@ class SchemaValidatorTest {
 
     @Test
     fun `Dto for periode validerer ikke dersom fnrStoenadsmottaker har feil format`() {
-        val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriodeBehandling("123456"))
+        val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriode("123456"))
+        val feilListe = schema.validate(node)
+        assertThat(feilListe).isNotEmpty
+    }
+
+    @Test
+    fun `Dto for annulert periode validerer ikke dersom fnrStoenadsmottaker har feil format`() {
+        val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriodeAnnulert("123456"))
         val feilListe = schema.validate(node)
         assertThat(feilListe).isNotEmpty
     }
@@ -52,103 +74,92 @@ class SchemaValidatorTest {
     @Test
     fun `Skal feile feil InfotrygdHendelsetype - Vedtak`() {
         val filter = setOf(EF_Vedtak_OvergStoenad, EF_Vedtak_Barnetilsyn, EF_Vedtak_Skolepenger)
-        for(type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
+        for (type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
             val node = objectMapper.valueToTree<JsonNode>(testDtoForVedtak(type = type))
             val feilListe = schema.validate(node)
-            assertThat(feilListe).isNotEmpty
+            assertThat(feilListe)
+                    .withFailMessage("Feiler ikke $type")
+                    .isNotEmpty
         }
     }
 
     @Test
     fun `Skal feile feil InfotrygdHendelsetype - StartBehandling`() {
-        val filter = setOf(EF_StartBeh_OvergStoenad, EF_StartBeh_Barnetilsyn, EF_StartBeh_Skolepenger)
-        for(type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
+        val filter = setOf(EF_StartBeh_OvergStoenad, EF_StartBeh_Barnetilsyn, EF_StartBeh_Skolepenger,
+                           EF_PeriodeAnn_OvergStoenad) // PeriodeAnn er lik StartBehandling i innhold
+        for (type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
             val node = objectMapper.valueToTree<JsonNode>(testDtoForStartBehandling(type = type))
             val feilListe = schema.validate(node)
-            assertThat(feilListe).isNotEmpty
+            assertThat(feilListe)
+                    .withFailMessage("Feiler ikke $type")
+                    .isNotEmpty
         }
     }
 
     @Test
     fun `SchemaValidering vedtak`() {
-        val type = "EF_Vedtak_Skolepenger"
-        val innhold = mapOf(
-                "fnr" to "12312312311",
-                "startdatoVedtakEF" to "2010-01-01"
-        )
-        validerSkjema(type, innhold)
+        assertThat(validerSkjema(EF_Vedtak_Skolepenger,
+                                 mapOf("fnr" to "12312312311",
+                                       "startdato" to "2010-01-01"
+                                 ))).isEmpty()
     }
 
     @Test
     fun `SchemaValidering start behandling`() {
-        val type = "EF_StartBeh_Skolepenger"
-        val innhold = mapOf("fnr" to "12312312311")
-        validerSkjema(type, innhold)
+        assertThat(validerSkjema(EF_StartBeh_Skolepenger,
+                                 mapOf("fnr" to "12312312311"))).isEmpty()
     }
 
-    private fun validerSkjema(type: String, innhold: Map<String, String>) {
+    @Test
+    fun `SchemaValidering periode savner sluttdato`() {
+        val innhold = mapOf("fnr" to "12312312311",
+                            "startdato" to "2010-01-01")
+        assertThat(validerSkjema(EF_Periode_OvergStoenad, innhold)).isNotEmpty
+    }
+
+    private fun validerSkjema(type: InfotrygdHendelseType, innhold: Map<String, String>): MutableSet<ValidationMessage>? {
         val node = objectMapper.valueToTree<JsonNode>(mapOf(
                 "tittel" to "tittel",
                 "inneholderFlereElementer" to true,
                 "elementer" to listOf(mapOf(
                         "sekvensId" to 1,
                         "type" to type,
-                        "saksnummer" to 1,
                         "metadata" to mapOf("opprettetDato" to "2018-04-18T09:03:29.202"),
                         "innhold" to innhold
                 ))
         ))
-        val feilListe = schema.validate(node)
-        assertThat(feilListe).isEmpty()
+        return schema.validate(node)
     }
 
     private fun testDtoForVedtak(fnr: String = "12345678910",
-                                 type: InfotrygdHendelseType = InfotrygdHendelseType.EF_Vedtak_OvergStoenad): FeedDto {
-        return FeedDto(
-                tittel = "Feed schema validator test",
-                inneholderFlereElementer = false,
-                elementer = listOf(
-                        FeedElement(
-                                sekvensId = 42,
-                                type = type,
-                                saksnummer = 1,
-                                metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
-                                innhold = VedtakInnhold(fnr = fnr, startdatoVedtakEF = LocalDate.now())
-                        ))
-        )
-    }
+                                 type: InfotrygdHendelseType = EF_Vedtak_OvergStoenad): FeedDto =
+            opprettFeed(type, VedtakInnhold(fnr = fnr, startdato = LocalDate.now()))
 
     private fun testDtoForStartBehandling(fnr: String = "12345678910",
-                                          type: InfotrygdHendelseType = EF_StartBeh_OvergStoenad): FeedDto {
-        return FeedDto(
-                tittel = "Feed schema validator test",
-                inneholderFlereElementer = false,
-                elementer = listOf(
-                        FeedElement(
-                                sekvensId = 42,
-                                type = type,
-                                saksnummer = 1,
-                                metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
-                                innhold = StartBehandlingInnhold(fnr = fnr)
-                        ))
-        )
-    }
+                                          type: InfotrygdHendelseType = EF_StartBeh_OvergStoenad): FeedDto =
+            opprettFeed(type, StartBehandlingInnhold(fnr = fnr))
 
-    private fun testDtoForPeriodeBehandling(fnr: String = "12345678910",
-                                            type: InfotrygdHendelseType = EF_Periode_OvergStoenad): FeedDto {
-        return FeedDto(
-                tittel = "Feed schema validator test",
-                inneholderFlereElementer = false,
-                elementer = listOf(
-                        FeedElement(
-                                sekvensId = 42,
-                                type = type,
-                                saksnummer = 1,
-                                metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
-                                innhold = PeriodeInnhold(fnr = fnr, periodestart = LocalDate.now(), periodeslutt = LocalDate.now())
-                        ))
-        )
-    }
+    private fun testDtoForPeriode(fnr: String = "12345678910",
+                                  type: InfotrygdHendelseType = EF_Periode_OvergStoenad): FeedDto =
+            opprettFeed(type, PeriodeInnhold(fnr = fnr, startdato = LocalDate.now(), sluttdato = LocalDate.now()))
+
+    private fun testDtoForPeriodeAnnulert(fnr: String = "12345678910",
+                                          type: InfotrygdHendelseType = EF_PeriodeAnn_OvergStoenad): FeedDto =
+            opprettFeed(type, PeriodeAnnulertInnhold(fnr = fnr))
+
+    private fun opprettFeed(type: InfotrygdHendelseType,
+                            innhold: Innhold) =
+            FeedDto(
+                    tittel = "Feed schema validator test",
+                    inneholderFlereElementer = false,
+                    elementer = listOf(
+                            FeedElement(
+                                    sekvensId = 42,
+                                    type = type,
+                                    metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
+                                    innhold = innhold
+                            ))
+            )
 
     private val schema: JsonSchema
         get() {

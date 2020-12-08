@@ -19,10 +19,16 @@
       "items": {
         "oneOf": [
           {
-            "$ref": "#/definitions/vedtak"
+            "$ref": "#/definitions/vedtakHendelse"
           },
           {
-            "$ref": "#/definitions/startBehandling"
+            "$ref": "#/definitions/startBehandlingHendelse"
+          },
+          {
+            "$ref": "#/definitions/periodeHendelse"
+          },
+          {
+            "$ref": "#/definitions/annulertPeriodeHendelse"
           }
         ]
       }
@@ -47,10 +53,6 @@
       "pattern": "^([0-9]{11})$",
       "title": "Fnr for den som mottar stønaden"
     },
-    "saksnummer": {
-      "type": "integer",
-      "title": "Fagsak extern id"
-    },
     "metadata": {
       "type": "object",
       "properties": {
@@ -68,14 +70,11 @@
         "opprettetDato"
       ]
     },
-    "vedtak": {
+    "vedtakHendelse": {
       "type": "object",
       "properties": {
         "sekvensId": {
           "$ref": "#/definitions/sekvensId"
-        },
-        "saksnummer": {
-          "$ref": "#/definitions/saksnummer"
         },
         "metadata": {
           "$ref": "#/definitions/metadata"
@@ -98,7 +97,7 @@
             "fnr": {
               "$ref": "#/definitions/fnr"
             },
-            "startdatoVedtakEF": {
+            "startdato": {
               "type": "string",
               "format": "date",
               "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
@@ -110,27 +109,23 @@
           "additionalProperties": false,
           "required": [
             "fnr",
-            "startdatoVedtakEF"
+            "startdato"
           ]
         }
       },
       "required": [
         "sekvensId",
-        "saksnummer",
         "metadata",
         "type",
         "innhold"
       ],
       "additionalProperties": false
     },
-    "startBehandling": {
+    "startBehandlingHendelse": {
       "type": "object",
       "properties": {
         "sekvensId": {
           "$ref": "#/definitions/sekvensId"
-        },
-        "saksnummer": {
-          "$ref": "#/definitions/saksnummer"
         },
         "metadata": {
           "$ref": "#/definitions/metadata"
@@ -162,7 +157,104 @@
       },
       "required": [
         "sekvensId",
-        "saksnummer",
+        "metadata",
+        "type",
+        "innhold"
+      ],
+      "additionalProperties": false
+    },
+    "periodeHendelse": {
+      "type": "object",
+      "properties": {
+        "sekvensId": {
+          "$ref": "#/definitions/sekvensId"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "type": {
+          "type": "string",
+          "title": "Type vedtak",
+          "examples": [
+            "EF_Periode_OvergStoenad"
+          ],
+          "enum": [
+            "EF_Periode_OvergStoenad"
+          ]
+        },
+        "innhold": {
+          "type": "object",
+          "properties": {
+            "fnr": {
+              "$ref": "#/definitions/fnr"
+            },
+            "startdato": {
+              "type": "string",
+              "format": "date",
+              "title": "Startdato for periode",
+              "examples": [
+                "2018-04-18"
+              ]
+            },
+            "sluttdato": {
+              "type": "string",
+              "format": "date",
+              "title": "Sluttdato for periode",
+              "examples": [
+                "2018-04-18"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fnr",
+            "startdato",
+            "sluttdato"
+          ]
+        }
+      },
+      "required": [
+        "sekvensId",
+        "metadata",
+        "type",
+        "innhold"
+      ],
+      "additionalProperties": false
+    },
+    "annulertPeriodeHendelse": {
+      "type": "object",
+      "properties": {
+        "sekvensId": {
+          "$ref": "#/definitions/sekvensId"
+        },
+        "metadata": {
+          "$ref": "#/definitions/metadata"
+        },
+        "type": {
+          "type": "string",
+          "title": "Type vedtak",
+          "examples": [
+            "EF_PeriodeAnn_OvergStoenad"
+          ],
+          "enum": [
+            "EF_PeriodeAnn_OvergStoenad"
+          ]
+        },
+        "innhold": {
+          "type": "object",
+          "properties": {
+            "fnr": {
+              "$ref": "#/definitions/fnr"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fnr"
+          ]
+        }
+      },
+      "required": [
+        "sekvensId",
         "metadata",
         "type",
         "innhold"

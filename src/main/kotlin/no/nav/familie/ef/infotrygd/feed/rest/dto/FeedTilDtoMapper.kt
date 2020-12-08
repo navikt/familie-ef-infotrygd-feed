@@ -12,7 +12,6 @@ fun konverterTilFeedMeldingDto(feedListe: List<Feed>): FeedDto =
                     FeedElement(
                             sekvensId = it.sekvensId,
                             type = mapHendelseType(it.type, it.stønad),
-                            saksnummer = it.saksnummer,
                             metadata = ElementMetadata(opprettetDato = it.opprettetDato),
                             innhold = mapInnhold(it)
                     )
@@ -22,6 +21,8 @@ private fun mapInnhold(it: Feed) =
         when (it.type) {
             HendelseType.VEDTAK -> VedtakInnhold(it.fnr, it.startdato!!)
             HendelseType.START_BEHANDLING -> StartBehandlingInnhold(it.fnr)
+            HendelseType.PERIODE -> PeriodeInnhold(it.fnr, it.startdato!!, it.sluttdato!!)
+            HendelseType.PERIODE_ANNULERT -> PeriodeAnnulertInnhold(it.fnr)
         }
 
 private fun mapHendelseType(hendelseType: HendelseType, stønadType: StønadType) =
@@ -35,6 +36,14 @@ private fun mapHendelseType(hendelseType: HendelseType, stønadType: StønadType
                 StønadType.BARNETILSYN -> InfotrygdHendelseType.EF_StartBeh_Barnetilsyn
                 StønadType.OVERGANGSSTØNAD -> InfotrygdHendelseType.EF_StartBeh_OvergStoenad
                 StønadType.SKOLEPENGER -> InfotrygdHendelseType.EF_StartBeh_Skolepenger
+            }
+            HendelseType.PERIODE -> when (stønadType) {
+                StønadType.OVERGANGSSTØNAD -> InfotrygdHendelseType.EF_Periode_OvergStoenad
+                else -> error("Har ikke mappet fler periodehendelser enn til overgangsstønad")
+            }
+            HendelseType.PERIODE_ANNULERT -> when (stønadType) {
+                StønadType.OVERGANGSSTØNAD -> InfotrygdHendelseType.EF_PeriodeAnn_OvergStoenad
+                else -> error("Har ikke mappet fler annulert periodehendelser enn til overgangsstønad")
             }
         }
 

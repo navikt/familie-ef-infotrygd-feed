@@ -3,9 +3,7 @@ package no.nav.familie.ef.infotrygd.feed.rest
 import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
 import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
-import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
-import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
-import no.nav.familie.kontrakter.ef.infotrygd.StønadType
+import no.nav.familie.kontrakter.ef.infotrygd.*
 import no.nav.familie.kontrakter.felles.objectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -45,17 +43,15 @@ internal class InfotrygdFeedControllerTest {
         opprettVedtak("12345678901", StønadType.OVERGANGSSTØNAD)
         opprettVedtak("12345678901", StønadType.SKOLEPENGER)
         opprettStartBehandling("12345678901", StønadType.OVERGANGSSTØNAD)
+        opprettPeriode("12345678901", StønadType.OVERGANGSSTØNAD)
 
-        assertThat(hentFeed(0))
-                .isEqualTo(readExpected(0))
-        assertThat(hentFeed(2))
-                .isEqualTo(readExpected(2))
-        assertThat(hentFeed(10))
-                .isEqualTo(readExpected(10))
+        listOf(0, 2, 10).forEach {
+            assertThat(hentFeed(it)).isEqualTo(readExpected(it))
+        }
     }
 
-    private fun hentFeed(sekvensnummer: Long): String? {
-        val feed = infotrygdFeedController.feed(sekvensnummer)
+    private fun hentFeed(sekvensnummer: Int): String? {
+        val feed = infotrygdFeedController.feed(sekvensnummer.toLong())
         val nyFeed = feed.copy(elementer = feed.elementer.map {
             it.copy(metadata = it.metadata.copy(opprettetDato = LocalDate.of(2020, 1, 1).atStartOfDay()))
         })
@@ -67,10 +63,16 @@ internal class InfotrygdFeedControllerTest {
     }
 
     private fun opprettVedtak(fnr: String, type: StønadType) {
-        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(fnr, 1, type, LocalDate.of(2020, 1, 1)))
+        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(fnr, type, LocalDate.of(2020, 1, 1)))
     }
 
     private fun opprettStartBehandling(fnr: String, type: StønadType) {
-        infotrygdFeedService.opprettNyFeed(OpprettStartBehandlingHendelseDto(fnr, 1, type))
+        infotrygdFeedService.opprettNyFeed(OpprettStartBehandlingHendelseDto(fnr, type))
+    }
+
+    private fun opprettPeriode(fnr: String, type: StønadType) {
+        val perioder = listOf(Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1)),
+                              Periode(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 1)))
+        infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(fnr, type, perioder))
     }
 }
