@@ -85,6 +85,9 @@ class InfotrygdFeedServiceIntegrationTest {
         val feed = infotrygdFeedService.hentMeldingerFraFeed(0, 5)
         assertThat(feed).hasSize(2)
         assertThat(feed[0].type).isEqualTo(HendelseType.PERIODE_ANNULERT)
+        assertThat(feed[0].startdato).isNull()
+        assertThat(feed[0].sluttdato).isNull()
+
         assertThat(feed[1].type).isEqualTo(HendelseType.PERIODE)
         assertThat(feed[1].startdato).isNotNull
         assertThat(feed[1].sluttdato).isNotNull
