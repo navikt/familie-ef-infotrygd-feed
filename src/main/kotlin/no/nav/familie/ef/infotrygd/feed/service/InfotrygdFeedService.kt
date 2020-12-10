@@ -41,7 +41,7 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                  fnr = opprettEntryDto.fnr,
                  startdato = it.startdato,
                  sluttdato = it.sluttdato,
-                 fullOvergangsstonad = opprettEntryDto.fullOvergangsstønad
+                 fullOvergangsstonad = it.fullOvergangsstønad
             )
         })
     }

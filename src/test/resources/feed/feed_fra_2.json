@@ -39,7 +39,7 @@
       "fnr" : "12345678901",
       "startdato" : "2020-03-01",
       "sluttdato" : "2020-04-01",
-      "fullOvergangsstonad" : true
+      "fullOvergangsstonad" : false
     }
   } ],
   "inneholderFlereElementer" : true,
