@@ -2,10 +2,12 @@ package no.nav.familie.ef.infotrygd.feed.service
 
 import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
 import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
-import no.nav.familie.kontrakter.ef.infotrygd.InfotrygdHendelseType
-import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
-import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
-import org.junit.jupiter.api.*
+import no.nav.familie.ef.infotrygd.feed.database.HendelseType
+import no.nav.familie.kontrakter.ef.infotrygd.*
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -32,49 +34,77 @@ class InfotrygdFeedServiceIntegrationTest {
 
     @Test
     fun `Vedtak - Hent feeds fra database`() {
-        val fnr = "12345678911"
-        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(type = InfotrygdHendelseType.EF_Vedtak_OvergStoenad,
-                                                                    fnr = fnr,
+        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(type = StønadType.OVERGANGSSTØNAD,
+                                                                    fnr = FNR,
                                                                     startdato = LocalDate.now()))
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
-        Assertions.assertNotNull(feeds.find {
-            it.type == InfotrygdHendelseType.EF_Vedtak_OvergStoenad
-            && it.fnr == fnr
-        })
+        assertThat(feeds.find {
+            it.type == HendelseType.VEDTAK
+            && it.stønad == StønadType.OVERGANGSSTØNAD
+            && it.fnr == FNR
+        }).isNotNull
     }
 
     @Test
     fun `StartBehandling - Hent feeds fra database`() {
-        val fnr = "12345678911"
         infotrygdFeedService.opprettNyFeed(
-                OpprettStartBehandlingHendelseDto(type = InfotrygdHendelseType.EF_StartBeh_OvergStoenad,
-                                                  fnr = fnr))
+                OpprettStartBehandlingHendelseDto(type = StønadType.BARNETILSYN,
+                                                  fnr = FNR))
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
-        Assertions.assertNotNull(feeds.find {
-            it.type == InfotrygdHendelseType.EF_StartBeh_OvergStoenad
-            && it.fnr == fnr
-        })
+        assertThat(feeds.find {
+            it.type == HendelseType.START_BEHANDLING
+            && it.stønad == StønadType.BARNETILSYN
+            && it.fnr == FNR
+        }).isNotNull
     }
 
     @Test
     fun `Verifiser at maks definert antall feeds blir returnert`() {
         val fnrStonadsmottaker = "10000000000"
         for (i in 1..3) infotrygdFeedService.opprettNyFeed(
-                OpprettVedtakHendelseDto(type = InfotrygdHendelseType.EF_Vedtak_OvergStoenad,
+                OpprettVedtakHendelseDto(type = StønadType.OVERGANGSSTØNAD,
                                          fnr = fnrStonadsmottaker + i,
                                          startdato = LocalDate.now()))
 
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0, 2)
 
-        Assertions.assertEquals(2, feeds.size)
+        assertThat(feeds).hasSize(2)
     }
 
     @Test
     fun `Hent feed-meldinger med høy sistLestSekvensId gir tom liste`() {
-        val feedListe = infotrygdFeedService.hentMeldingerFraFeed(1000)
+        assertThat(infotrygdFeedService.hentMeldingerFraFeed(1000)).isEmpty()
+    }
 
-        Assertions.assertTrue(feedListe.isEmpty())
+    @Test
+    internal fun `Opprett periode opprettet en annulert periodehenselde først`() {
+        val perioder = listOf(Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1)))
+        val opprettEntryDto = OpprettPeriodeHendelseDto(FNR, StønadType.OVERGANGSSTØNAD, true, perioder = perioder)
+        infotrygdFeedService.opprettNyFeed(opprettEntryDto)
+        val feed = infotrygdFeedService.hentMeldingerFraFeed(0, 5)
+        assertThat(feed).hasSize(2)
+        assertThat(feed[0].type).isEqualTo(HendelseType.PERIODE_ANNULERT)
+        assertThat(feed[0].startdato).isNull()
+        assertThat(feed[0].sluttdato).isNull()
+
+        assertThat(feed[1].type).isEqualTo(HendelseType.PERIODE)
+        assertThat(feed[1].startdato).isNotNull
+        assertThat(feed[1].sluttdato).isNotNull
+    }
+
+    @Test
+    internal fun `Opprett periode uten perioder oppretter kun en annulert periode`() {
+        val opprettEntryDto = OpprettPeriodeHendelseDto(FNR, StønadType.OVERGANGSSTØNAD, true, perioder = emptyList())
+        infotrygdFeedService.opprettNyFeed(opprettEntryDto)
+        val feed = infotrygdFeedService.hentMeldingerFraFeed(0, 5)
+        assertThat(feed).hasSize(1)
+        assertThat(feed[0].type).isEqualTo(HendelseType.PERIODE_ANNULERT)
+    }
+
+    companion object {
+
+        const val FNR = "12345678911"
     }
 }

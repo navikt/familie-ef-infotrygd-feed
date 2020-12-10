@@ -1,14 +1,47 @@
 {
   "elementer" : [ {
-    "innhold" : {
-      "fnr" : "12345678901"
-    },
+    "sekvensId" : 3,
+    "type" : "EF_StartBeh_OvergStoenad",
     "metadata" : {
       "opprettetDato" : "2020-01-01T00:00:00"
     },
-    "sekvensId" : 3,
-    "type" : "EF_StartBeh_OvergStoenad"
+    "innhold" : {
+      "fnr" : "12345678901"
+    }
+  }, {
+    "sekvensId" : 4,
+    "type" : "EF_PeriodeAnn_OvergStoenad",
+    "metadata" : {
+      "opprettetDato" : "2020-01-01T00:00:00"
+    },
+    "innhold" : {
+      "fnr" : "12345678901"
+    }
+  }, {
+    "sekvensId" : 5,
+    "type" : "EF_Periode_OvergStoenad",
+    "metadata" : {
+      "opprettetDato" : "2020-01-01T00:00:00"
+    },
+    "innhold" : {
+      "fnr" : "12345678901",
+      "startdato" : "2020-01-01",
+      "sluttdato" : "2020-02-01",
+      "fullOvergangsstonad" : true
+    }
+  }, {
+    "sekvensId" : 6,
+    "type" : "EF_Periode_OvergStoenad",
+    "metadata" : {
+      "opprettetDato" : "2020-01-01T00:00:00"
+    },
+    "innhold" : {
+      "fnr" : "12345678901",
+      "startdato" : "2020-03-01",
+      "sluttdato" : "2020-04-01",
+      "fullOvergangsstonad" : true
+    }
   } ],
-  "inneholderFlereElementer" : false,
+  "inneholderFlereElementer" : true,
   "tittel" : "Enslig forsørger feed"
 }
