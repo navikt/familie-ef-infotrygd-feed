@@ -73,6 +73,6 @@ internal class InfotrygdFeedControllerTest {
     private fun opprettPeriode(fnr: String, type: StønadType) {
         val perioder = listOf(Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1)),
                               Periode(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 1)))
-        infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(fnr, type, perioder))
+        infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(fnr, type, true, perioder))
     }
 }

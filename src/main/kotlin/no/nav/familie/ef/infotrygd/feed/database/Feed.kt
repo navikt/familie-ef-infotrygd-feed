@@ -11,9 +11,10 @@ data class Feed(@Id
                 val type: HendelseType,
                 @Column("stonad")
                 val stønad: StønadType,
-                var fnr: String,
-                var startdato: LocalDate?,
-                var sluttdato: LocalDate?,
+                val fnr: String,
+                val startdato: LocalDate? = null,
+                val sluttdato: LocalDate? = null,
+                val fullOvergangsstonad: Boolean? = null,
                 var opprettetDato: LocalDateTime = LocalDateTime.now())
 
 enum class HendelseType {

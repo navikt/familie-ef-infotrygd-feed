@@ -32,5 +32,8 @@ interface Innhold
 
 data class VedtakInnhold(val fnr: String, val startdato: LocalDate) : Innhold
 data class StartBehandlingInnhold(val fnr: String) : Innhold
-data class PeriodeInnhold(val fnr: String, val startdato: LocalDate, val sluttdato: LocalDate) : Innhold
+data class PeriodeInnhold(val fnr: String,
+                          val startdato: LocalDate,
+                          val sluttdato: LocalDate,
+                          val fullOvergangsstonad: Boolean) : Innhold
 data class PeriodeAnnulertInnhold(val fnr: String) : Innhold

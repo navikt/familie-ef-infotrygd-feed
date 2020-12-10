@@ -21,7 +21,7 @@ private fun mapInnhold(it: Feed) =
         when (it.type) {
             HendelseType.VEDTAK -> VedtakInnhold(it.fnr, it.startdato!!)
             HendelseType.START_BEHANDLING -> StartBehandlingInnhold(it.fnr)
-            HendelseType.PERIODE -> PeriodeInnhold(it.fnr, it.startdato!!, it.sluttdato!!)
+            HendelseType.PERIODE -> PeriodeInnhold(it.fnr, it.startdato!!, it.sluttdato!!, it.fullOvergangsstonad!!)
             HendelseType.PERIODE_ANNULERT -> PeriodeAnnulertInnhold(it.fnr)
         }
 

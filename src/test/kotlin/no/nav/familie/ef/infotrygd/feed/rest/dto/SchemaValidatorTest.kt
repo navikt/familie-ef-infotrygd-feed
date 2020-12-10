@@ -141,7 +141,10 @@ class SchemaValidatorTest {
 
     private fun testDtoForPeriode(fnr: String = "12345678910",
                                   type: InfotrygdHendelseType = EF_Periode_OvergStoenad): FeedDto =
-            opprettFeed(type, PeriodeInnhold(fnr = fnr, startdato = LocalDate.now(), sluttdato = LocalDate.now()))
+            opprettFeed(type, PeriodeInnhold(fnr = fnr,
+                                             startdato = LocalDate.now(),
+                                             sluttdato = LocalDate.now(),
+                                             fullOvergangsstonad = true))
 
     private fun testDtoForPeriodeAnnulert(fnr: String = "12345678910",
                                           type: InfotrygdHendelseType = EF_PeriodeAnn_OvergStoenad): FeedDto =

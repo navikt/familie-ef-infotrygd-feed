@@ -17,25 +17,20 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
         feedRepository.save(Feed(type = HendelseType.VEDTAK,
                                  stønad = opprettEntryDto.type,
                                  fnr = opprettEntryDto.fnr,
-                                 startdato = opprettEntryDto.startdato,
-                                 sluttdato = null))
+                                 startdato = opprettEntryDto.startdato))
     }
 
     fun opprettNyFeed(opprettEntryDto: OpprettStartBehandlingHendelseDto) {
         feedRepository.save(Feed(type = HendelseType.START_BEHANDLING,
                                  stønad = opprettEntryDto.type,
-                                 fnr = opprettEntryDto.fnr,
-                                 startdato = null,
-                                 sluttdato = null))
+                                 fnr = opprettEntryDto.fnr))
     }
 
     @Transactional
     fun opprettNyFeed(opprettEntryDto: OpprettPeriodeHendelseDto) {
         feedRepository.save(Feed(type = HendelseType.PERIODE_ANNULERT,
                                  stønad = opprettEntryDto.type,
-                                 fnr = opprettEntryDto.fnr,
-                                 startdato = null,
-                                 sluttdato = null
+                                 fnr = opprettEntryDto.fnr
         ))
         if (opprettEntryDto.perioder.isEmpty()) {
             return
@@ -45,7 +40,8 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                  stønad = opprettEntryDto.type,
                  fnr = opprettEntryDto.fnr,
                  startdato = it.startdato,
-                 sluttdato = it.sluttdato
+                 sluttdato = it.sluttdato,
+                 fullOvergangsstonad = opprettEntryDto.fullOvergangsstønad
             )
         })
     }

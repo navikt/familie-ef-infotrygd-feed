@@ -203,13 +203,21 @@
               "examples": [
                 "2018-04-18"
               ]
+            },
+            "fullOvergangsstonad": {
+              "type": "boolean",
+              "title": "Full eller delvis overgangsstonad",
+              "examples": [
+                true
+              ]
             }
           },
           "additionalProperties": false,
           "required": [
             "fnr",
             "startdato",
-            "sluttdato"
+            "sluttdato",
+            "fullOvergangsstonad"
           ]
         }
       },
