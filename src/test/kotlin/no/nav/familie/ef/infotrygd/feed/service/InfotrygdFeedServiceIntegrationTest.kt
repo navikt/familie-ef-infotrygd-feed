@@ -80,8 +80,8 @@ class InfotrygdFeedServiceIntegrationTest {
 
     @Test
     internal fun `Opprett periode opprettet en annulert periodehenselde først`() {
-        val perioder = listOf(Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1)))
-        val opprettEntryDto = OpprettPeriodeHendelseDto(FNR, StønadType.OVERGANGSSTØNAD, true, perioder = perioder)
+        val perioder = listOf(Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1), true))
+        val opprettEntryDto = OpprettPeriodeHendelseDto(FNR, StønadType.OVERGANGSSTØNAD, perioder = perioder)
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         val feed = infotrygdFeedService.hentMeldingerFraFeed(0, 5)
         assertThat(feed).hasSize(2)
@@ -96,7 +96,7 @@ class InfotrygdFeedServiceIntegrationTest {
 
     @Test
     internal fun `Opprett periode uten perioder oppretter kun en annulert periode`() {
-        val opprettEntryDto = OpprettPeriodeHendelseDto(FNR, StønadType.OVERGANGSSTØNAD, true, perioder = emptyList())
+        val opprettEntryDto = OpprettPeriodeHendelseDto(FNR, StønadType.OVERGANGSSTØNAD, perioder = emptyList())
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         val feed = infotrygdFeedService.hentMeldingerFraFeed(0, 5)
         assertThat(feed).hasSize(1)
