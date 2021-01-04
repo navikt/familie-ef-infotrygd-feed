@@ -37,6 +37,11 @@ spec:
     enabled: true
   ingresses:
     - https://familie-ef-infotrygd-feed.nais.adeo.no
+  accessPolicy:
+    inbound:
+      rules:
+        - application: familie-ef-sak
+          namespace: default
   azure:
     application:
       enabled: true

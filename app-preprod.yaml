@@ -35,11 +35,17 @@ spec:
       cpu: 200m
   ingresses:
     - https://familie-ef-infotrygd-feed.dev.adeo.no
+  accessPolicy:
+    inbound:
+      rules:
+        - application: familie-ef-sak
+          namespace: default
   secureLogs:
     enabled: true
   azure:
     application:
       enabled: true
+      tenant: trygdeetaten.no
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: preprod
