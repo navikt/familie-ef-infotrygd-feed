@@ -72,26 +72,8 @@
                 ]
               }
             },
-            "anyOf": [
-              {
-                "required": [
-                  "fnr",
-                  "startdato"
-                ]
-              },
-              {
-                "required": [
-                  "fnr"
-                ]
-              },
-              {
-                "required": [
-                  "fnr",
-                  "startdato",
-                  "sluttdato",
-                  "fullOvergangsstonad"
-                ]
-              }
+            "required": [
+              "fnr"
             ],
             "additionalProperties": false
           }
