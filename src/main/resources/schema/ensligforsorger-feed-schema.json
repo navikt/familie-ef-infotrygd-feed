@@ -17,21 +17,93 @@
     "elementer": {
       "type": "array",
       "items": {
-        "oneOf": [
-          {
-            "$ref": "#/definitions/vedtakHendelse"
+        "type": "object",
+        "properties": {
+          "sekvensId": {
+            "$ref": "#/definitions/sekvensId"
           },
-          {
-            "$ref": "#/definitions/startBehandlingHendelse"
+          "metadata": {
+            "$ref": "#/definitions/metadata"
           },
-          {
-            "$ref": "#/definitions/periodeHendelse"
+          "type": {
+            "type": "string",
+            "title": "Type vedtak",
+            "examples": [
+              "EF_Periode_OvergStoenad"
+            ],
+            "enum": [
+              "EF_Vedtak_Skolepenger",
+              "EF_Vedtak_OvergStoenad",
+              "EF_Vedtak_Barnetilsyn",
+              "EF_StartBeh_Skolepenger",
+              "EF_StartBeh_OvergStoenad",
+              "EF_StartBeh_Barnetilsyn",
+              "EF_Periode_OvergStoenad",
+              "EF_PeriodeAnn_OvergStoenad"
+            ]
           },
-          {
-            "$ref": "#/definitions/annulertPeriodeHendelse"
+          "innhold": {
+            "type": "object",
+            "properties": {
+              "fnr": {
+                "$ref": "#/definitions/fnr"
+              },
+              "startdato": {
+                "type": "string",
+                "format": "date",
+                "title": "Første dato stønad utbetales fra ny løsning (vedtak) eler startdato for periode",
+                "examples": [
+                  "2018-04-18"
+                ]
+              },
+              "sluttdato": {
+                "type": "string",
+                "format": "date",
+                "title": "Sluttdato for periode",
+                "examples": [
+                  "2018-04-18"
+                ]
+              },
+              "fullOvergangsstonad": {
+                "type": "boolean",
+                "title": "Full eller delvis overgangsstonad",
+                "examples": [
+                  true
+                ]
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "fnr",
+                  "startdato"
+                ]
+              },
+              {
+                "required": [
+                  "fnr"
+                ]
+              },
+              {
+                "required": [
+                  "fnr",
+                  "startdato",
+                  "sluttdato",
+                  "fullOvergangsstonad"
+                ]
+              }
+            ],
+            "additionalProperties": false
           }
-        ]
-      }
+        }
+      },
+      "required": [
+        "sekvensId",
+        "metadata",
+        "type",
+        "innhold"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -69,205 +141,6 @@
       "required": [
         "opprettetDato"
       ]
-    },
-    "vedtakHendelse": {
-      "type": "object",
-      "properties": {
-        "sekvensId": {
-          "$ref": "#/definitions/sekvensId"
-        },
-        "metadata": {
-          "$ref": "#/definitions/metadata"
-        },
-        "type": {
-          "type": "string",
-          "title": "Type vedtak",
-          "examples": [
-            "EF_Vedtak_Skolepenger"
-          ],
-          "enum": [
-            "EF_Vedtak_Skolepenger",
-            "EF_Vedtak_OvergStoenad",
-            "EF_Vedtak_Barnetilsyn"
-          ]
-        },
-        "innhold": {
-          "type": "object",
-          "properties": {
-            "fnr": {
-              "$ref": "#/definitions/fnr"
-            },
-            "startdato": {
-              "type": "string",
-              "format": "date",
-              "title": "Første dato stønad utbetales fra ny løsning - kun for vedtak og ikke startBeh",
-              "examples": [
-                "2018-04-18"
-              ]
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "fnr",
-            "startdato"
-          ]
-        }
-      },
-      "required": [
-        "sekvensId",
-        "metadata",
-        "type",
-        "innhold"
-      ],
-      "additionalProperties": false
-    },
-    "startBehandlingHendelse": {
-      "type": "object",
-      "properties": {
-        "sekvensId": {
-          "$ref": "#/definitions/sekvensId"
-        },
-        "metadata": {
-          "$ref": "#/definitions/metadata"
-        },
-        "type": {
-          "type": "string",
-          "title": "Type vedtak",
-          "examples": [
-            "EF_StartBeh_Skolepenger"
-          ],
-          "enum": [
-            "EF_StartBeh_Skolepenger",
-            "EF_StartBeh_OvergStoenad",
-            "EF_StartBeh_Barnetilsyn"
-          ]
-        },
-        "innhold": {
-          "type": "object",
-          "properties": {
-            "fnr": {
-              "$ref": "#/definitions/fnr"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "fnr"
-          ]
-        }
-      },
-      "required": [
-        "sekvensId",
-        "metadata",
-        "type",
-        "innhold"
-      ],
-      "additionalProperties": false
-    },
-    "periodeHendelse": {
-      "type": "object",
-      "properties": {
-        "sekvensId": {
-          "$ref": "#/definitions/sekvensId"
-        },
-        "metadata": {
-          "$ref": "#/definitions/metadata"
-        },
-        "type": {
-          "type": "string",
-          "title": "Type vedtak",
-          "examples": [
-            "EF_Periode_OvergStoenad"
-          ],
-          "enum": [
-            "EF_Periode_OvergStoenad"
-          ]
-        },
-        "innhold": {
-          "type": "object",
-          "properties": {
-            "fnr": {
-              "$ref": "#/definitions/fnr"
-            },
-            "startdato": {
-              "type": "string",
-              "format": "date",
-              "title": "Startdato for periode",
-              "examples": [
-                "2018-04-18"
-              ]
-            },
-            "sluttdato": {
-              "type": "string",
-              "format": "date",
-              "title": "Sluttdato for periode",
-              "examples": [
-                "2018-04-18"
-              ]
-            },
-            "fullOvergangsstonad": {
-              "type": "boolean",
-              "title": "Full eller delvis overgangsstonad",
-              "examples": [
-                true
-              ]
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "fnr",
-            "startdato",
-            "sluttdato",
-            "fullOvergangsstonad"
-          ]
-        }
-      },
-      "required": [
-        "sekvensId",
-        "metadata",
-        "type",
-        "innhold"
-      ],
-      "additionalProperties": false
-    },
-    "annulertPeriodeHendelse": {
-      "type": "object",
-      "properties": {
-        "sekvensId": {
-          "$ref": "#/definitions/sekvensId"
-        },
-        "metadata": {
-          "$ref": "#/definitions/metadata"
-        },
-        "type": {
-          "type": "string",
-          "title": "Type vedtak",
-          "examples": [
-            "EF_PeriodeAnn_OvergStoenad"
-          ],
-          "enum": [
-            "EF_PeriodeAnn_OvergStoenad"
-          ]
-        },
-        "innhold": {
-          "type": "object",
-          "properties": {
-            "fnr": {
-              "$ref": "#/definitions/fnr"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "fnr"
-          ]
-        }
-      },
-      "required": [
-        "sekvensId",
-        "metadata",
-        "type",
-        "innhold"
-      ],
-      "additionalProperties": false
     }
   }
 }

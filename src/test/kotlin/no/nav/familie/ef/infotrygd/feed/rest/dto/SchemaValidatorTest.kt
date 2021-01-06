@@ -32,6 +32,7 @@ class SchemaValidatorTest {
     @Test
     fun `Dto for periode validerer mot schema`() {
         val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriode())
+        println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(node))
         val feilListe = schema.validate(node)
         assertThat(feilListe).isEmpty()
     }
@@ -72,31 +73,6 @@ class SchemaValidatorTest {
     }
 
     @Test
-    fun `Skal feile feil InfotrygdHendelsetype - Vedtak`() {
-        val filter = setOf(EF_Vedtak_OvergStoenad, EF_Vedtak_Barnetilsyn, EF_Vedtak_Skolepenger)
-        for (type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
-            val node = objectMapper.valueToTree<JsonNode>(testDtoForVedtak(type = type))
-            val feilListe = schema.validate(node)
-            assertThat(feilListe)
-                    .withFailMessage("Feiler ikke $type")
-                    .isNotEmpty
-        }
-    }
-
-    @Test
-    fun `Skal feile feil InfotrygdHendelsetype - StartBehandling`() {
-        val filter = setOf(EF_StartBeh_OvergStoenad, EF_StartBeh_Barnetilsyn, EF_StartBeh_Skolepenger,
-                           EF_PeriodeAnn_OvergStoenad) // PeriodeAnn er lik StartBehandling i innhold
-        for (type in InfotrygdHendelseType.values().filterNot { filter.contains(it) }) {
-            val node = objectMapper.valueToTree<JsonNode>(testDtoForStartBehandling(type = type))
-            val feilListe = schema.validate(node)
-            assertThat(feilListe)
-                    .withFailMessage("Feiler ikke $type")
-                    .isNotEmpty
-        }
-    }
-
-    @Test
     fun `SchemaValidering vedtak`() {
         assertThat(validerSkjema(EF_Vedtak_Skolepenger,
                                  mapOf("fnr" to "12312312311",
@@ -108,13 +84,6 @@ class SchemaValidatorTest {
     fun `SchemaValidering start behandling`() {
         assertThat(validerSkjema(EF_StartBeh_Skolepenger,
                                  mapOf("fnr" to "12312312311"))).isEmpty()
-    }
-
-    @Test
-    fun `SchemaValidering periode savner sluttdato`() {
-        val innhold = mapOf("fnr" to "12312312311",
-                            "startdato" to "2010-01-01")
-        assertThat(validerSkjema(EF_Periode_OvergStoenad, innhold)).isNotEmpty
     }
 
     private fun validerSkjema(type: InfotrygdHendelseType, innhold: Map<String, String>): MutableSet<ValidationMessage>? {
