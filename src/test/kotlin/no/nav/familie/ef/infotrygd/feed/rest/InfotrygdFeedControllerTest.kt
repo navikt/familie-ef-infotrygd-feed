@@ -10,6 +10,7 @@ import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.Periode
 import no.nav.familie.kontrakter.felles.objectMapper
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -38,8 +39,12 @@ internal class InfotrygdFeedControllerTest {
 
     @BeforeEach
     internal fun setUp() {
-        feedRepository.deleteAll()
         jdbcTemplate.execute("ALTER SEQUENCE feed_sekvens_id_seq RESTART")
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        feedRepository.deleteAll()
     }
 
     @Test
