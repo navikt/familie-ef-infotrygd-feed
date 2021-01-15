@@ -13,37 +13,45 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class InfotrygdFeedService(val feedRepository: FeedRepository) {
 
+    @Transactional
     fun opprettNyFeed(opprettEntryDto: OpprettVedtakHendelseDto) {
-        feedRepository.save(Feed(type = HendelseType.VEDTAK,
-                                 stønad = opprettEntryDto.type,
-                                 fnr = opprettEntryDto.fnr,
-                                 startdato = opprettEntryDto.startdato))
+        opprettEntryDto.personIdenter.forEach { personIdent ->
+            feedRepository.save(Feed(type = HendelseType.VEDTAK,
+                                     stønad = opprettEntryDto.type,
+                                     personIdent = personIdent,
+                                     startdato = opprettEntryDto.startdato))
+        }
     }
 
+    @Transactional
     fun opprettNyFeed(opprettEntryDto: OpprettStartBehandlingHendelseDto) {
-        feedRepository.save(Feed(type = HendelseType.START_BEHANDLING,
-                                 stønad = opprettEntryDto.type,
-                                 fnr = opprettEntryDto.fnr))
+        opprettEntryDto.personIdenter.forEach { personIdent ->
+            feedRepository.save(Feed(type = HendelseType.START_BEHANDLING,
+                                     stønad = opprettEntryDto.type,
+                                     personIdent = personIdent))
+        }
     }
 
     @Transactional
     fun opprettNyFeed(opprettEntryDto: OpprettPeriodeHendelseDto) {
-        feedRepository.save(Feed(type = HendelseType.PERIODE_ANNULERT,
-                                 stønad = opprettEntryDto.type,
-                                 fnr = opprettEntryDto.fnr
-        ))
-        if (opprettEntryDto.perioder.isEmpty()) {
-            return
+        opprettEntryDto.personIdenter.forEach { personIdent ->
+            feedRepository.save(Feed(type = HendelseType.PERIODE_ANNULERT,
+                                     stønad = opprettEntryDto.type,
+                                     personIdent = personIdent
+            ))
+            if (opprettEntryDto.perioder.isEmpty()) {
+                return
+            }
+            feedRepository.saveAll(opprettEntryDto.perioder.map {
+                Feed(type = HendelseType.PERIODE,
+                     stønad = opprettEntryDto.type,
+                     personIdent = personIdent,
+                     startdato = it.startdato,
+                     sluttdato = it.sluttdato,
+                     fullOvergangsstonad = it.fullOvergangsstønad
+                )
+            })
         }
-        feedRepository.saveAll(opprettEntryDto.perioder.map {
-            Feed(type = HendelseType.PERIODE,
-                 stønad = opprettEntryDto.type,
-                 fnr = opprettEntryDto.fnr,
-                 startdato = it.startdato,
-                 sluttdato = it.sluttdato,
-                 fullOvergangsstonad = it.fullOvergangsstønad
-            )
-        })
     }
 
     fun hentMeldingerFraFeed(sistLestSekvensId: Long, maxSize: Int = 100): List<Feed> =

@@ -1,6 +1,6 @@
 package no.nav.familie.ef.infotrygd.feed.database
 
-import no.nav.familie.kontrakter.ef.infotrygd.StønadType
+import no.nav.familie.kontrakter.ef.felles.StønadType
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import java.time.LocalDate
@@ -11,7 +11,7 @@ data class Feed(@Id
                 val type: HendelseType,
                 @Column("stonad")
                 val stønad: StønadType,
-                val fnr: String,
+                val personIdent: String,
                 val startdato: LocalDate? = null,
                 val sluttdato: LocalDate? = null,
                 val fullOvergangsstonad: Boolean? = null,

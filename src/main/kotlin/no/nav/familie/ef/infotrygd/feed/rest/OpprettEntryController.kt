@@ -4,7 +4,7 @@ import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
-import no.nav.familie.kontrakter.ef.infotrygd.StønadType
+import no.nav.familie.kontrakter.ef.felles.StønadType
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity

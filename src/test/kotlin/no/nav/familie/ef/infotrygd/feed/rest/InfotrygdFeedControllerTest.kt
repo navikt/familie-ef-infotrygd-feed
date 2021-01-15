@@ -3,7 +3,11 @@ package no.nav.familie.ef.infotrygd.feed.rest
 import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
 import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
-import no.nav.familie.kontrakter.ef.infotrygd.*
+import no.nav.familie.kontrakter.ef.felles.StønadType
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.Periode
 import no.nav.familie.kontrakter.felles.objectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -63,16 +67,18 @@ internal class InfotrygdFeedControllerTest {
     }
 
     private fun opprettVedtak(fnr: String, type: StønadType) {
-        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(fnr, type, LocalDate.of(2020, 1, 1)))
+        infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(setOf(fnr), type, LocalDate.of(2020, 1, 1)))
     }
 
     private fun opprettStartBehandling(fnr: String, type: StønadType) {
-        infotrygdFeedService.opprettNyFeed(OpprettStartBehandlingHendelseDto(fnr, type))
+        infotrygdFeedService.opprettNyFeed(OpprettStartBehandlingHendelseDto(setOf(fnr), type))
     }
 
     private fun opprettPeriode(fnr: String, type: StønadType) {
-        val perioder = listOf(Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1), true),
-                              Periode(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 1), false))
-        infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(fnr, type, perioder))
+        val perioder = listOf(
+            Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1), true),
+            Periode(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 1), false)
+        )
+        infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(setOf(fnr), type, perioder))
     }
 }

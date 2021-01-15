@@ -30,6 +30,9 @@ data class ElementMetadata(val opprettetDato: LocalDateTime)
 
 interface Innhold
 
+/**
+ * Fnr på Innholdsentries er personident, kan være dnr og.
+ */
 data class VedtakInnhold(val fnr: String, val startdato: LocalDate) : Innhold
 data class StartBehandlingInnhold(val fnr: String) : Innhold
 data class PeriodeInnhold(val fnr: String,
