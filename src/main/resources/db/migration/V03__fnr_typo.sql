@@ -1,0 +1,1 @@
+ALTER TABLE FEED RENAME COLUMN fnr TO person_ident;

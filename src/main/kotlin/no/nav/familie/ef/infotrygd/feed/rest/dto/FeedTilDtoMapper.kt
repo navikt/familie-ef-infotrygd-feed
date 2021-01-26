@@ -2,7 +2,7 @@ package no.nav.familie.ef.infotrygd.feed.rest.dto
 
 import no.nav.familie.ef.infotrygd.feed.database.Feed
 import no.nav.familie.ef.infotrygd.feed.database.HendelseType
-import no.nav.familie.kontrakter.ef.infotrygd.StønadType
+import no.nav.familie.kontrakter.ef.felles.StønadType
 
 fun konverterTilFeedMeldingDto(feedListe: List<Feed>): FeedDto =
         FeedDto(
@@ -19,10 +19,10 @@ fun konverterTilFeedMeldingDto(feedListe: List<Feed>): FeedDto =
 
 private fun mapInnhold(it: Feed) =
         when (it.type) {
-            HendelseType.VEDTAK -> VedtakInnhold(it.fnr, it.startdato!!)
-            HendelseType.START_BEHANDLING -> StartBehandlingInnhold(it.fnr)
-            HendelseType.PERIODE -> PeriodeInnhold(it.fnr, it.startdato!!, it.sluttdato!!, it.fullOvergangsstonad!!)
-            HendelseType.PERIODE_ANNULERT -> PeriodeAnnulertInnhold(it.fnr)
+            HendelseType.VEDTAK -> VedtakInnhold(it.personIdent, it.startdato!!)
+            HendelseType.START_BEHANDLING -> StartBehandlingInnhold(it.personIdent)
+            HendelseType.PERIODE -> PeriodeInnhold(it.personIdent, it.startdato!!, it.sluttdato!!, it.fullOvergangsstonad!!)
+            HendelseType.PERIODE_ANNULERT -> PeriodeAnnulertInnhold(it.personIdent)
         }
 
 private fun mapHendelseType(hendelseType: HendelseType, stønadType: StønadType) =
