@@ -37,11 +37,15 @@ spec:
     enabled: true
   ingresses:
     - https://familie-ef-infotrygd-feed.nais.adeo.no
+    - https://familie-ef-infotrygd-feed.prod-fss-pub.nais.io
   accessPolicy:
     inbound:
       rules:
         - application: familie-ef-sak
           namespace: default
+        - application: familie-ef-sak
+          namespace: teamfamilie
+          cluster: dev-gcp
   azure:
     application:
       enabled: true

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/entry",
                 consumes = [MediaType.APPLICATION_JSON_VALUE],
                 produces = [MediaType.APPLICATION_JSON_VALUE])
-@ProtectedWithClaims(issuer = "azuread")
+@ProtectedWithClaims(issuer = "azuread", claimMap=["roles=access_as_application"])
 class OpprettEntryController(private val infotrygdFeedService: InfotrygdFeedService) {
 
     @PostMapping("/vedtak")
