@@ -45,7 +45,7 @@ spec:
           namespace: default
         - application: familie-ef-sak
           namespace: teamfamilie
-          cluster: dev-gcp
+          cluster: prod-gcp
   azure:
     application:
       enabled: true
