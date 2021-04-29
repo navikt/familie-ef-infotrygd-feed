@@ -46,6 +46,9 @@ spec:
         - application: familie-ef-sak
           namespace: teamfamilie
           cluster: prod-gcp
+        - application: familie-ef-iverksett
+          namespace: teamfamilie
+          cluster: prod-gcp
   azure:
     application:
       enabled: true
