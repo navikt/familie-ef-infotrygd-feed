@@ -2,7 +2,7 @@ name: Deploy-Master-Dev
 on:
   workflow_dispatch:
 env:
-  IMAGE_LATEST: docker.pkg.github.com/${{ github.repository }}/familie-ef-infotrygd-feed:latest
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/familie-ef-infotrygd-feed:latest
 jobs:
   deploy-to-dev:
     name: Deploy master til dev
