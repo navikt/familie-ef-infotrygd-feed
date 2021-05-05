@@ -8,6 +8,8 @@ jobs:
     name: Deploy master til dev
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
       - name: Deploy til dev-fss
         uses: nais/deploy/actions/deploy@v1
         env:
