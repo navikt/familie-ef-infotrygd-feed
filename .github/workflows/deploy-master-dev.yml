@@ -1,6 +1,6 @@
 name: Deploy-Master-Dev
 on:
-  repository_dispatch:
+  workflow_dispatch:
 env:
   IMAGE: ghcr.io/navikt/familie-ef-infotrygd-feed:latest
 jobs:
