@@ -27,13 +27,13 @@ class SwaggerConfig {
     fun customImplementation(): Docket {
 
         return Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(basePackage))
-                .paths(PathSelectors.any())
-                .build()
-                .securitySchemes(securitySchemes())
-                .securityContexts(securityContext())
-                .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.basePackage(basePackage))
+            .paths(PathSelectors.any())
+            .build()
+            .securitySchemes(securitySchemes())
+            .securityContexts(securityContext())
+            .apiInfo(apiInfo())
     }
 
     private fun securitySchemes(): List<ApiKey> {
@@ -41,10 +41,12 @@ class SwaggerConfig {
     }
 
     private fun securityContext(): List<SecurityContext> {
-        return listOf(SecurityContext.builder()
-                              .securityReferences(defaultAuth())
-                              .forPaths(PathSelectors.regex("/api.*"))
-                              .build())
+        return listOf(
+            SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("/api.*"))
+                .build()
+        )
     }
 
     private fun defaultAuth(): List<SecurityReference> {

@@ -5,7 +5,6 @@ import com.networknt.schema.JsonSchema
 import com.networknt.schema.JsonSchemaFactory
 import com.networknt.schema.SpecVersion
 import com.networknt.schema.ValidationMessage
-import no.nav.familie.ef.infotrygd.feed.rest.dto.InfotrygdHendelseType.*
 import no.nav.familie.kontrakter.felles.objectMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -74,64 +73,93 @@ class SchemaValidatorTest {
 
     @Test
     fun `SchemaValidering vedtak`() {
-        assertThat(validerSkjema(EF_Vedtak_Skolepenger,
-                                 mapOf("fnr" to "12312312311",
-                                       "startdato" to "2010-01-01"
-                                 ))).isEmpty()
+        assertThat(
+            validerSkjema(
+                InfotrygdHendelseType.EF_Vedtak_Skolepenger,
+                mapOf(
+                    "fnr" to "12312312311",
+                    "startdato" to "2010-01-01"
+                )
+            )
+        ).isEmpty()
     }
 
     @Test
     fun `SchemaValidering start behandling`() {
-        assertThat(validerSkjema(EF_StartBeh_Skolepenger,
-                                 mapOf("fnr" to "12312312311"))).isEmpty()
+        assertThat(
+            validerSkjema(
+                InfotrygdHendelseType.EF_StartBeh_Skolepenger,
+                mapOf("fnr" to "12312312311")
+            )
+        ).isEmpty()
     }
 
     private fun validerSkjema(type: InfotrygdHendelseType, innhold: Map<String, String>): MutableSet<ValidationMessage>? {
-        val node = objectMapper.valueToTree<JsonNode>(mapOf(
+        val node = objectMapper.valueToTree<JsonNode>(
+            mapOf(
                 "tittel" to "tittel",
                 "inneholderFlereElementer" to true,
-                "elementer" to listOf(mapOf(
+                "elementer" to listOf(
+                    mapOf(
                         "sekvensId" to 1,
                         "type" to type,
                         "metadata" to mapOf("opprettetDato" to "2018-04-18T09:03:29.202"),
                         "innhold" to innhold
-                ))
-        ))
+                    )
+                )
+            )
+        )
         return schema.validate(node)
     }
 
-    private fun testDtoForVedtak(fnr: String = "12345678910",
-                                 type: InfotrygdHendelseType = EF_Vedtak_OvergStoenad): FeedDto =
-            opprettFeed(type, VedtakInnhold(fnr = fnr, startdato = LocalDate.now()))
+    private fun testDtoForVedtak(
+        fnr: String = "12345678910",
+        type: InfotrygdHendelseType = InfotrygdHendelseType.EF_Vedtak_OvergStoenad
+    ): FeedDto =
+        opprettFeed(type, VedtakInnhold(fnr = fnr, startdato = LocalDate.now()))
 
-    private fun testDtoForStartBehandling(fnr: String = "12345678910",
-                                          type: InfotrygdHendelseType = EF_StartBeh_OvergStoenad): FeedDto =
-            opprettFeed(type, StartBehandlingInnhold(fnr = fnr))
+    private fun testDtoForStartBehandling(
+        fnr: String = "12345678910",
+        type: InfotrygdHendelseType = InfotrygdHendelseType.EF_StartBeh_OvergStoenad
+    ): FeedDto =
+        opprettFeed(type, StartBehandlingInnhold(fnr = fnr))
 
-    private fun testDtoForPeriode(fnr: String = "12345678910",
-                                  type: InfotrygdHendelseType = EF_Periode_OvergStoenad): FeedDto =
-            opprettFeed(type, PeriodeInnhold(fnr = fnr,
-                                             startdato = LocalDate.now(),
-                                             sluttdato = LocalDate.now(),
-                                             fullOvergangsstonad = true))
-
-    private fun testDtoForPeriodeAnnulert(fnr: String = "12345678910",
-                                          type: InfotrygdHendelseType = EF_PeriodeAnn_OvergStoenad): FeedDto =
-            opprettFeed(type, PeriodeAnnulertInnhold(fnr = fnr))
-
-    private fun opprettFeed(type: InfotrygdHendelseType,
-                            innhold: Innhold) =
-            FeedDto(
-                    tittel = "Feed schema validator test",
-                    inneholderFlereElementer = false,
-                    elementer = listOf(
-                            FeedElement(
-                                    sekvensId = 42,
-                                    type = type,
-                                    metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
-                                    innhold = innhold
-                            ))
+    private fun testDtoForPeriode(
+        fnr: String = "12345678910",
+        type: InfotrygdHendelseType = InfotrygdHendelseType.EF_Periode_OvergStoenad
+    ): FeedDto =
+        opprettFeed(
+            type,
+            PeriodeInnhold(
+                fnr = fnr,
+                startdato = LocalDate.now(),
+                sluttdato = LocalDate.now(),
+                fullOvergangsstonad = true
             )
+        )
+
+    private fun testDtoForPeriodeAnnulert(
+        fnr: String = "12345678910",
+        type: InfotrygdHendelseType = InfotrygdHendelseType.EF_PeriodeAnn_OvergStoenad
+    ): FeedDto =
+        opprettFeed(type, PeriodeAnnulertInnhold(fnr = fnr))
+
+    private fun opprettFeed(
+        type: InfotrygdHendelseType,
+        innhold: Innhold
+    ) =
+        FeedDto(
+            tittel = "Feed schema validator test",
+            inneholderFlereElementer = false,
+            elementer = listOf(
+                FeedElement(
+                    sekvensId = 42,
+                    type = type,
+                    metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
+                    innhold = innhold
+                )
+            )
+        )
 
     private val schema: JsonSchema
         get() {

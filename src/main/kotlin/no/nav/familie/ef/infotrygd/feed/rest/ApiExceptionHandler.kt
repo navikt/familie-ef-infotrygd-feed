@@ -22,11 +22,13 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
         return NestedExceptionUtils.getMostSpecificCause(throwable).javaClass.simpleName
     }
 
-    override fun handleExceptionInternal(ex: Exception,
-                                         body: Any?,
-                                         headers: HttpHeaders,
-                                         status: HttpStatus,
-                                         request: WebRequest): ResponseEntity<Any> {
+    override fun handleExceptionInternal(
+        ex: Exception,
+        body: Any?,
+        headers: HttpHeaders,
+        status: HttpStatus,
+        request: WebRequest
+    ): ResponseEntity<Any> {
         secureLogger.error("En feil har oppstått", ex)
         logger.error("En feil har oppstått - throwable=${rootCause(ex)} status=${status.value()}")
         return super.handleExceptionInternal(ex, body, headers, status, request)
@@ -45,18 +47,20 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
         secureLogger.error("En feil har oppstått ${throwable.message}", throwable)
         logger.error("En feil har oppstått - throwable=${rootCause(throwable)} ")
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Uventet feil")
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Uventet feil")
     }
 
     // Denne håndterer eks JwtTokenUnauthorizedException
-    private fun håndtertResponseStatusFeil(throwable: Throwable,
-                                           responseStatus: ResponseStatus): ResponseEntity<String> {
+    private fun håndtertResponseStatusFeil(
+        throwable: Throwable,
+        responseStatus: ResponseStatus
+    ): ResponseEntity<String> {
         val status = if (responseStatus.value != HttpStatus.INTERNAL_SERVER_ERROR) responseStatus.value else responseStatus.code
         val loggMelding = "En håndtert feil har oppstått" +
-                          " throwable=${rootCause(throwable)}" +
-                          " reason=${responseStatus.reason}" +
-                          " status=$status"
+            " throwable=${rootCause(throwable)}" +
+            " reason=${responseStatus.reason}" +
+            " status=$status"
 
         loggFeil(throwable, loggMelding)
         return ResponseEntity.status(status).body("Håndtert feil")
@@ -68,5 +72,4 @@ class ApiExceptionHandler : ResponseEntityExceptionHandler() {
             else -> logger.error(loggMelding)
         }
     }
-
 }

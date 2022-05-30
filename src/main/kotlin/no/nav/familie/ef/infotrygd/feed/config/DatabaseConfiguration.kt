@@ -10,7 +10,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager
 import org.springframework.transaction.PlatformTransactionManager
 import javax.sql.DataSource
 
-
 @Configuration
 @EnableJdbcRepositories("no.nav.familie")
 class DatabaseConfiguration : AbstractJdbcConfiguration() {
@@ -24,5 +23,4 @@ class DatabaseConfiguration : AbstractJdbcConfiguration() {
     fun transactionManager(dataSource: DataSource): PlatformTransactionManager {
         return DataSourceTransactionManager(dataSource)
     }
-
 }
