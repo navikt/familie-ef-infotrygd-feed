@@ -3,8 +3,11 @@ package no.nav.familie.ef.infotrygd.feed.service
 import no.nav.familie.ef.infotrygd.feed.database.DbContainerInitializer
 import no.nav.familie.ef.infotrygd.feed.database.FeedRepository
 import no.nav.familie.ef.infotrygd.feed.database.HendelseType
-import no.nav.familie.kontrakter.ef.infotrygd.*
-import no.nav.familie.kontrakter.ef.felles.*
+import no.nav.familie.kontrakter.ef.felles.StønadType
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
+import no.nav.familie.kontrakter.ef.infotrygd.Periode
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Tag
@@ -126,8 +129,6 @@ class InfotrygdFeedServiceIntegrationTest {
         assertThat(feed).hasSize(1)
         assertThat(feed[0].type).isEqualTo(HendelseType.PERIODE_ANNULERT)
     }
-
-
 
     companion object {
 

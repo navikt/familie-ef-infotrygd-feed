@@ -16,14 +16,18 @@ enum class InfotrygdHendelseType {
     EF_PeriodeAnn_OvergStoenad
 }
 
-data class FeedDto(val elementer: List<FeedElement>,
-                   val inneholderFlereElementer: Boolean,
-                   val tittel: String)
+data class FeedDto(
+    val elementer: List<FeedElement>,
+    val inneholderFlereElementer: Boolean,
+    val tittel: String
+)
 
-data class FeedElement(val sekvensId: Int,
-                       val type: InfotrygdHendelseType,
-                       val metadata: ElementMetadata,
-                       val innhold: Innhold)
+data class FeedElement(
+    val sekvensId: Int,
+    val type: InfotrygdHendelseType,
+    val metadata: ElementMetadata,
+    val innhold: Innhold
+)
 
 // opprettetDato blir trunkert hos infotrygd, men er fint å ha med hele datot hvis det trengs for noen andre
 data class ElementMetadata(val opprettetDato: LocalDateTime)
@@ -35,8 +39,10 @@ interface Innhold
  */
 data class VedtakInnhold(val fnr: String, val startdato: LocalDate) : Innhold
 data class StartBehandlingInnhold(val fnr: String) : Innhold
-data class PeriodeInnhold(val fnr: String,
-                          val startdato: LocalDate,
-                          val sluttdato: LocalDate,
-                          val fullOvergangsstonad: Boolean) : Innhold
+data class PeriodeInnhold(
+    val fnr: String,
+    val startdato: LocalDate,
+    val sluttdato: LocalDate,
+    val fullOvergangsstonad: Boolean
+) : Innhold
 data class PeriodeAnnulertInnhold(val fnr: String) : Innhold

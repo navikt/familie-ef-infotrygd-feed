@@ -23,7 +23,6 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDate
 
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(initializers = [DbContainerInitializer::class])
@@ -61,9 +60,11 @@ internal class InfotrygdFeedControllerTest {
 
     private fun hentFeed(sekvensnummer: Int): String? {
         val feed = infotrygdFeedController.feed(sekvensnummer.toLong())
-        val nyFeed = feed.copy(elementer = feed.elementer.map {
-            it.copy(metadata = it.metadata.copy(opprettetDato = LocalDate.of(2020, 1, 1).atStartOfDay()))
-        })
+        val nyFeed = feed.copy(
+            elementer = feed.elementer.map {
+                it.copy(metadata = it.metadata.copy(opprettetDato = LocalDate.of(2020, 1, 1).atStartOfDay()))
+            }
+        )
         return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(nyFeed)
     }
 

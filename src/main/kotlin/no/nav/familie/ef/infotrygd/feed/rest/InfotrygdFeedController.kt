@@ -20,18 +20,17 @@ class InfotrygdFeedController(private val infotrygdFeedService: InfotrygdFeedSer
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Operation(
-            summary = "Hent liste med hendelser.",
-            description = "Henter hendelser med sekvensId større enn sistLesteSekvensId."
+        summary = "Hent liste med hendelser.",
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId."
     )
     @GetMapping(produces = ["application/json; charset=us-ascii"])
     fun feed(
-            @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
-            @RequestParam("sistLesteSekvensId") sekvensnummer: Long
+        @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long
     ): FeedDto {
         val konverterTilFeedMeldingDto =
-                konverterTilFeedMeldingDto(infotrygdFeedService.hentMeldingerFraFeed(sistLestSekvensId = sekvensnummer))
+            konverterTilFeedMeldingDto(infotrygdFeedService.hentMeldingerFraFeed(sistLestSekvensId = sekvensnummer))
         logger.info("Hentet ${konverterTilFeedMeldingDto.elementer.size} feeds fra sekvensnummer $sekvensnummer")
         return konverterTilFeedMeldingDto
     }
-
 }
