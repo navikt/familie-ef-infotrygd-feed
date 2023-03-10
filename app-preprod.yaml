@@ -34,8 +34,7 @@ spec:
       memory: 512Mi
       cpu: 200m
   ingresses:
-    - https://familie-ef-infotrygd-feed.nais.preprod.local
-    - https://familie-ef-infotrygd-feed.dev.adeo.no
+    - https://familie-ef-infotrygd-feed.dev.intern.nav.no
     - https://familie-ef-infotrygd-feed.dev-fss-pub.nais.io
   accessPolicy:
     inbound:
