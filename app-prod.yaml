@@ -36,6 +36,7 @@ spec:
   secureLogs:
     enabled: true
   ingresses:
+    - https://familie-ef-infotrygd-feed.intern.nav.no
     - https://familie-ef-infotrygd-feed.nais.adeo.no
     - https://familie-ef-infotrygd-feed.prod-fss-pub.nais.io
   accessPolicy:
