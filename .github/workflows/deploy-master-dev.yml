@@ -1,11 +1,11 @@
-name: Deploy-Master-Dev
+name: Deploy-Main-Dev
 on:
   workflow_dispatch:
 env:
   IMAGE: ghcr.io/navikt/familie-ef-infotrygd-feed:latest
 jobs:
   deploy-to-dev:
-    name: Deploy master til dev
+    name: Deploy main til dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
