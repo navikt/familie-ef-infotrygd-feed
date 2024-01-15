@@ -17,7 +17,7 @@ jobs:
         with:
           java-version: 21
       - name: Read/save maven cache
-        uses: actions/cache@v4
+        uses: actions/cache@v1
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-cache-ef-infotrygd-feed-${{ hashFiles('**/pom.xml') }}
