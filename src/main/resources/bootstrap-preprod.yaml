@@ -10,7 +10,7 @@ spring:
         lifecycle.enabled: true
       database:
         enabled: true
-        role: familie-ef-infotrygd-feed-admin
+        role: familie-ef-infotrygd-feed-15-admin
         backend: postgresql/preprod-fss
       authentication: KUBERNETES
       kubernetes:
