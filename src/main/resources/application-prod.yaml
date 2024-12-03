@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://A01DBVL020.adeo.no:5432/familie-ef-infotrygd-feed
+    url: jdbc:postgresql://A01DBVL036.adeo.no:5432/familie-ef-infotrygd-feed-15
 
 no.nav.security.jwt:
   issuer.sts:
