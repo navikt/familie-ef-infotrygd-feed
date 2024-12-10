@@ -20,10 +20,10 @@ psql -U postgres
 CREATE DATABASE "familie-ef-infotrygd-feed";
 ```
 
-### Databasenavn on-prem
-Navnet på database i preprod er `familie-ef-infotrygd-feed` og i prod er det `familie-ef-infotrygd-feed-15`
+### Databasenavn og versjon on-prem
+Navnet på database i preprod er `familie-ef-infotrygd-feed` og er på versjon `16.4.0`. 
+I prod er navnet på databasen `familie-ef-infotrygd-feed-15` og er på versjon `15.7.0`.
 
-Postgres `15.7.0` kjører i prod og preprod kjører på `16.4.0`
 Databasestatistikk for on-prem databaser finnes her: https://grafana.nav.cloud.nais.io/goto/apT2w8VHg?orgId=1
 
 ## Kontaktinformasjon
