@@ -23,17 +23,18 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDate
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest // (webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(initializers = [DbContainerInitializer::class])
 @ActiveProfiles("postgres")
 @Tag("integration")
 internal class InfotrygdFeedControllerTest {
-
     @Autowired private lateinit var infotrygdFeedController: InfotrygdFeedController
+
     @Autowired private lateinit var infotrygdFeedService: InfotrygdFeedService
 
     @Autowired lateinit var feedRepository: FeedRepository
+
     @Autowired lateinit var jdbcTemplate: JdbcTemplate
 
     @BeforeEach
@@ -60,31 +61,44 @@ internal class InfotrygdFeedControllerTest {
 
     private fun hentFeed(sekvensnummer: Int): String? {
         val feed = infotrygdFeedController.feed(sekvensnummer.toLong())
-        val nyFeed = feed.copy(
-            elementer = feed.elementer.map {
-                it.copy(metadata = it.metadata.copy(opprettetDato = LocalDate.of(2020, 1, 1).atStartOfDay()))
-            }
-        )
+        val nyFeed =
+            feed.copy(
+                elementer =
+                    feed.elementer.map {
+                        it.copy(metadata = it.metadata.copy(opprettetDato = LocalDate.of(2020, 1, 1).atStartOfDay()))
+                    },
+            )
         return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(nyFeed)
     }
 
-    private fun readExpected(id: Int): String {
-        return this::class.java.classLoader.getResource("feed/feed_fra_$id.json").readText()
-    }
+    private fun readExpected(id: Int): String =
+        this::class.java.classLoader
+            .getResource("feed/feed_fra_$id.json")
+            .readText()
 
-    private fun opprettVedtak(fnr: String, type: StønadType) {
+    private fun opprettVedtak(
+        fnr: String,
+        type: StønadType,
+    ) {
         infotrygdFeedService.opprettNyFeed(OpprettVedtakHendelseDto(setOf(fnr), type, LocalDate.of(2020, 1, 1)))
     }
 
-    private fun opprettStartBehandling(fnr: String, type: StønadType) {
+    private fun opprettStartBehandling(
+        fnr: String,
+        type: StønadType,
+    ) {
         infotrygdFeedService.opprettNyFeed(OpprettStartBehandlingHendelseDto(setOf(fnr), type))
     }
 
-    private fun opprettPeriode(fnr: String, type: StønadType) {
-        val perioder = listOf(
-            Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1), true),
-            Periode(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 1), false)
-        )
+    private fun opprettPeriode(
+        fnr: String,
+        type: StønadType,
+    ) {
+        val perioder =
+            listOf(
+                Periode(LocalDate.of(2020, 1, 1), LocalDate.of(2020, 2, 1), true),
+                Periode(LocalDate.of(2020, 3, 1), LocalDate.of(2020, 4, 1), false),
+            )
         infotrygdFeedService.opprettNyFeed(OpprettPeriodeHendelseDto(setOf(fnr), type, perioder))
     }
 }

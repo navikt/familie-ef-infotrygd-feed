@@ -13,14 +13,9 @@ import javax.sql.DataSource
 @Configuration
 @EnableJdbcRepositories("no.nav.familie")
 class DatabaseConfiguration : AbstractJdbcConfiguration() {
+    @Bean
+    fun operations(dataSource: DataSource): NamedParameterJdbcOperations = NamedParameterJdbcTemplate(dataSource)
 
     @Bean
-    fun operations(dataSource: DataSource): NamedParameterJdbcOperations {
-        return NamedParameterJdbcTemplate(dataSource)
-    }
-
-    @Bean
-    fun transactionManager(dataSource: DataSource): PlatformTransactionManager {
-        return DataSourceTransactionManager(dataSource)
-    }
+    fun transactionManager(dataSource: DataSource): PlatformTransactionManager = DataSourceTransactionManager(dataSource)
 }
