@@ -29,6 +29,9 @@ class SchemaValidatorTest {
 
     @Test
     fun `Dto for periode validerer mot schema`() {
+        val now = LocalDateTime.now().toString()
+        println(now)
+
         val node = objectMapper.valueToTree<JsonNode>(testDtoForPeriode())
         println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(node))
         val feilListe = schema.validate(node)
@@ -156,7 +159,7 @@ class SchemaValidatorTest {
                 FeedElement(
                     sekvensId = 42,
                     type = type,
-                    metadata = ElementMetadata(opprettetDato = LocalDateTime.now()),
+                    metadata = ElementMetadata(opprettetDato = LocalDateTime.now().minusDays(1)),
                     innhold = innhold,
                 ),
             ),
@@ -165,7 +168,32 @@ class SchemaValidatorTest {
     private val schema: JsonSchema
         get() {
             val schemaNode = objectMapper.readTree(hentFeedSchema())
-            return JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).getSchema(schemaNode)
+            val jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)
+            // jsonSchemaFactory.
+            return jsonSchemaFactory.getSchema(schemaNode)
+
+//            val uri = "https://json-schema.org/draft-04/schema"
+//            val id = "\$id"
+//            val myJsonMetaSchema =
+//                JsonMetaSchema
+//                    .Builder(uri)
+//                    .idKeyword(id)
+//                    .keywords(ValidatorTypeCode.getKeywords(SpecVersion.VersionFlag.V4))
+//                    .keywords(
+//                        listOf(
+//                            NonValidationKeyword("\$schema"),
+//                            NonValidationKeyword("\$id"),
+//                            NonValidationKeyword("examples"),
+//                        ),
+//                    ).build()
+//
+//            return JsonSchemaFactory
+//                .builder(
+//                    JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4),
+//                ).defaultMetaSchemaIri(uri)
+//                .metaSchema(myJsonMetaSchema)
+//                .build()
+//                .getSchema(schemaNode)
         }
 
     private fun hentFeedSchema(): String {
