@@ -15,18 +15,19 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/feed")
 @ProtectedWithClaims(issuer = "sts")
-class InfotrygdFeedController(private val infotrygdFeedService: InfotrygdFeedService) {
-
+class InfotrygdFeedController(
+    private val infotrygdFeedService: InfotrygdFeedService,
+) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Operation(
         summary = "Hent liste med hendelser.",
-        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId."
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
     )
     @GetMapping(produces = ["application/json; charset=us-ascii"])
     fun feed(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
-        @RequestParam("sistLesteSekvensId") sekvensnummer: Long
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long,
     ): FeedDto {
         val konverterTilFeedMeldingDto =
             konverterTilFeedMeldingDto(infotrygdFeedService.hentMeldingerFraFeed(sistLestSekvensId = sekvensnummer))

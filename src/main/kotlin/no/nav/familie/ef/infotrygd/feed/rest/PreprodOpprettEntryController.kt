@@ -19,25 +19,32 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(
     "/api/preprod",
     consumes = [MediaType.APPLICATION_JSON_VALUE],
-    produces = [MediaType.APPLICATION_JSON_VALUE]
+    produces = [MediaType.APPLICATION_JSON_VALUE],
 )
 @ProtectedWithClaims(issuer = "sts")
-class PreprodOpprettEntryController(private val infotrygdFeedService: InfotrygdFeedService) {
-
+class PreprodOpprettEntryController(
+    private val infotrygdFeedService: InfotrygdFeedService,
+) {
     @PostMapping("/vedtak")
-    fun lagNyVedtaksMelding(@RequestBody opprettEntryDto: OpprettVedtakHendelseDto): ResponseEntity<Any> {
+    fun lagNyVedtaksMelding(
+        @RequestBody opprettEntryDto: OpprettVedtakHendelseDto,
+    ): ResponseEntity<Any> {
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/start-behandling")
-    fun lagNyStartBehandlingMelding(@RequestBody opprettEntryDto: OpprettStartBehandlingHendelseDto): ResponseEntity<Any> {
+    fun lagNyStartBehandlingMelding(
+        @RequestBody opprettEntryDto: OpprettStartBehandlingHendelseDto,
+    ): ResponseEntity<Any> {
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/periode")
-    fun lagNyPeriodeMelding(@RequestBody opprettEntryDto: OpprettPeriodeHendelseDto): ResponseEntity<Any> {
+    fun lagNyPeriodeMelding(
+        @RequestBody opprettEntryDto: OpprettPeriodeHendelseDto,
+    ): ResponseEntity<Any> {
         if (opprettEntryDto.type != StønadType.OVERGANGSSTØNAD) {
             return ResponseEntity.badRequest().body("Har ikke satt opp mappinger for andre typer enn for overgangsstønad")
         }

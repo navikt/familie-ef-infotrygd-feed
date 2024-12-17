@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class InfotrygdFeedService(val feedRepository: FeedRepository) {
-
+class InfotrygdFeedService(
+    val feedRepository: FeedRepository,
+) {
     @Transactional
     fun opprettNyFeed(opprettEntryDto: OpprettVedtakHendelseDto) {
         opprettEntryDto.personIdenter.forEach { personIdent ->
@@ -21,8 +22,8 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                     type = HendelseType.VEDTAK,
                     stønad = opprettEntryDto.type,
                     personIdent = personIdent,
-                    startdato = opprettEntryDto.startdato
-                )
+                    startdato = opprettEntryDto.startdato,
+                ),
             )
         }
     }
@@ -34,8 +35,8 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                 Feed(
                     type = HendelseType.START_BEHANDLING,
                     stønad = opprettEntryDto.type,
-                    personIdent = personIdent
-                )
+                    personIdent = personIdent,
+                ),
             )
         }
     }
@@ -47,8 +48,8 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                 Feed(
                     type = HendelseType.PERIODE_ANNULERT,
                     stønad = opprettEntryDto.type,
-                    personIdent = personIdent
-                )
+                    personIdent = personIdent,
+                ),
             )
             if (opprettEntryDto.perioder.isEmpty()) {
                 return
@@ -61,16 +62,19 @@ class InfotrygdFeedService(val feedRepository: FeedRepository) {
                         personIdent = personIdent,
                         startdato = it.startdato,
                         sluttdato = it.sluttdato,
-                        fullOvergangsstonad = it.fullOvergangsstønad
+                        fullOvergangsstonad = it.fullOvergangsstønad,
                     )
-                }
+                },
             )
         }
     }
 
-    fun hentMeldingerFraFeed(sistLestSekvensId: Long, maxSize: Int = 100): List<Feed> =
+    fun hentMeldingerFraFeed(
+        sistLestSekvensId: Long,
+        maxSize: Int = 100,
+    ): List<Feed> =
         feedRepository.findBySekvensIdGreaterThanOrderBySekvensIdAsc(
             PageRequest.of(0, maxSize),
-            sistLestSekvensId
+            sistLestSekvensId,
         )
 }

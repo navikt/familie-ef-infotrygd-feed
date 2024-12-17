@@ -16,12 +16,12 @@ data class Feed(
     val startdato: LocalDate? = null,
     val sluttdato: LocalDate? = null,
     val fullOvergangsstonad: Boolean? = null,
-    var opprettetDato: LocalDateTime = LocalDateTime.now()
+    var opprettetDato: LocalDateTime = LocalDateTime.now(),
 )
 
 enum class HendelseType {
     VEDTAK,
     START_BEHANDLING,
     PERIODE,
-    PERIODE_ANNULERT
+    PERIODE_ANNULERT,
 }
