@@ -3,6 +3,7 @@ package no.nav.familie.ef.infotrygd.feed.rest.dto
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@Suppress("ktlint:standard:enum-entry-name-case")
 enum class InfotrygdHendelseType {
     EF_Vedtak_Skolepenger,
     EF_Vedtak_OvergStoenad,
@@ -13,36 +14,48 @@ enum class InfotrygdHendelseType {
     EF_StartBeh_Barnetilsyn,
 
     EF_Periode_OvergStoenad,
-    EF_PeriodeAnn_OvergStoenad
+    EF_PeriodeAnn_OvergStoenad,
 }
 
 data class FeedDto(
     val elementer: List<FeedElement>,
     val inneholderFlereElementer: Boolean,
-    val tittel: String
+    val tittel: String,
 )
 
 data class FeedElement(
     val sekvensId: Int,
     val type: InfotrygdHendelseType,
     val metadata: ElementMetadata,
-    val innhold: Innhold
+    val innhold: Innhold,
 )
 
 // opprettetDato blir trunkert hos infotrygd, men er fint å ha med hele datot hvis det trengs for noen andre
-data class ElementMetadata(val opprettetDato: LocalDateTime)
+data class ElementMetadata(
+    val opprettetDato: LocalDateTime,
+)
 
 interface Innhold
 
 /**
  * Fnr på Innholdsentries er personident, kan være dnr og.
  */
-data class VedtakInnhold(val fnr: String, val startdato: LocalDate) : Innhold
-data class StartBehandlingInnhold(val fnr: String) : Innhold
+data class VedtakInnhold(
+    val fnr: String,
+    val startdato: LocalDate,
+) : Innhold
+
+data class StartBehandlingInnhold(
+    val fnr: String,
+) : Innhold
+
 data class PeriodeInnhold(
     val fnr: String,
     val startdato: LocalDate,
     val sluttdato: LocalDate,
-    val fullOvergangsstonad: Boolean
+    val fullOvergangsstonad: Boolean,
 ) : Innhold
-data class PeriodeAnnulertInnhold(val fnr: String) : Innhold
+
+data class PeriodeAnnulertInnhold(
+    val fnr: String,
+) : Innhold

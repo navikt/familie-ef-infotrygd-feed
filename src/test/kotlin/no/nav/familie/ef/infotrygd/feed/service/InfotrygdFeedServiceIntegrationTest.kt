@@ -8,6 +8,7 @@ import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettStartBehandlingHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettVedtakHendelseDto
 import no.nav.familie.kontrakter.ef.infotrygd.Periode
+import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Tag
@@ -20,13 +21,13 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.time.LocalDate
 
-@SpringBootTest
+@SpringBootTest()
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(initializers = [DbContainerInitializer::class])
 @ActiveProfiles("postgres")
 @Tag("integration")
+@EnableMockOAuth2Server
 class InfotrygdFeedServiceIntegrationTest {
-
     @Autowired lateinit var infotrygdFeedService: InfotrygdFeedService
 
     @Autowired lateinit var feedRepository: FeedRepository
@@ -43,8 +44,8 @@ class InfotrygdFeedServiceIntegrationTest {
             OpprettVedtakHendelseDto(
                 type = StønadType.OVERGANGSSTØNAD,
                 personIdenter = personIdenter,
-                startdato = LocalDate.now()
-            )
+                startdato = LocalDate.now(),
+            ),
         )
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
@@ -66,8 +67,8 @@ class InfotrygdFeedServiceIntegrationTest {
         infotrygdFeedService.opprettNyFeed(
             OpprettStartBehandlingHendelseDto(
                 type = StønadType.BARNETILSYN,
-                personIdenter = personIdenter
-            )
+                personIdenter = personIdenter,
+            ),
         )
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0)
 
@@ -82,13 +83,15 @@ class InfotrygdFeedServiceIntegrationTest {
     @Test
     fun `Verifiser at maks definert antall feeds blir returnert`() {
         val fnrStonadsmottaker = "10000000000"
-        for (i in 1..3) infotrygdFeedService.opprettNyFeed(
-            OpprettVedtakHendelseDto(
-                type = StønadType.OVERGANGSSTØNAD,
-                personIdenter = setOf(fnrStonadsmottaker + i),
-                startdato = LocalDate.now()
+        for (i in 1..3) {
+            infotrygdFeedService.opprettNyFeed(
+                OpprettVedtakHendelseDto(
+                    type = StønadType.OVERGANGSSTØNAD,
+                    personIdenter = setOf(fnrStonadsmottaker + i),
+                    startdato = LocalDate.now(),
+                ),
             )
-        )
+        }
 
         val feeds = infotrygdFeedService.hentMeldingerFraFeed(0, 2)
 
@@ -131,7 +134,6 @@ class InfotrygdFeedServiceIntegrationTest {
     }
 
     companion object {
-
         const val FNR = "12345678911"
         const val FNR2 = "12345678912"
     }
