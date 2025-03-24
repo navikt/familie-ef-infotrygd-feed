@@ -45,5 +45,5 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-fss
-          RESOURCE: .deploy/app-preprod.yaml
+          RESOURCE: app-preprod.yaml
           IMAGE: ${{ needs.build.outputs.image }}
