@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>3.5.7</version>
     </parent>
 
     <properties>
@@ -19,11 +19,11 @@
         <sha1/>
         <changelist>-SNAPSHOT</changelist>
         <java.version>21</java.version>
-        <kotlin.version>2.2.20</kotlin.version>
-        <felles-kontrakter.version>3.0_20251010090545_ece0054</felles-kontrakter.version>
-        <felles.version>3.20250915092837_153983f</felles.version>
-        <springdoc.version>2.8.13</springdoc.version>
-        <token-validation-spring.version>5.0.37</token-validation-spring.version>
+        <kotlin.version>2.2.21</kotlin.version>
+        <felles-kontrakter.version>3.0_20251112142340_c5baa9c</felles-kontrakter.version>
+        <felles.version>3.20251105152539_b03ed80</felles.version>
+        <springdoc.version>2.8.14</springdoc.version>
+        <token-validation-spring.version>5.0.39</token-validation-spring.version>
         <spring.vault.version>3.2.0</spring.vault.version>
         <spring.cloud.version>4.3.0</spring.cloud.version>
     </properties>
@@ -177,7 +177,7 @@
             <groupId>com.networknt</groupId>
             <artifactId>json-schema-validator</artifactId>
             <scope>test</scope>
-            <version>1.5.9</version>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -299,7 +299,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>ktlint</id>
@@ -338,7 +338,7 @@
                     <dependency>
                         <groupId>com.pinterest.ktlint</groupId>
                         <artifactId>ktlint-cli</artifactId>
-                        <version>1.7.1</version>
+                        <version>1.8.0</version>
                     </dependency>
                     <!-- additional 3rd party ruleset(s) can be specified here -->
                 </dependencies>
