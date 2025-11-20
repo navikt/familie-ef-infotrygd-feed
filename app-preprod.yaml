@@ -47,6 +47,10 @@ spec:
         - application: familie-ef-iverksett
           namespace: teamfamilie
           cluster: dev-gcp
+    outbound:
+      rules:
+        - application: logging
+          namespace: nais-system
   secureLogs:
     enabled: true
   azure:
