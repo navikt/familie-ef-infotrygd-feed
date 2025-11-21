@@ -50,6 +50,10 @@ spec:
         - application: familie-ef-iverksett
           namespace: teamfamilie
           cluster: prod-gcp
+    outbound:
+      rules:
+        - application: logging
+          namespace: nais-system
   azure:
     application:
       enabled: true
