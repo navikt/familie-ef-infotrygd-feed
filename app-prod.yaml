@@ -33,8 +33,6 @@ spec:
     requests:
       memory: 512Mi
       cpu: 200m
-  secureLogs:
-    enabled: true
   ingresses:
     - https://familie-ef-infotrygd-feed.intern.nav.no
     - https://familie-ef-infotrygd-feed.nais.adeo.no
