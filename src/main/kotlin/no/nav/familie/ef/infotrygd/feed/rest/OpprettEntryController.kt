@@ -31,6 +31,6 @@ class OpprettEntryController(
                 .body("Har ikke satt opp mappinger for andre typer enn for overgangsstønad")
         }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok("OK")
     }
 }
