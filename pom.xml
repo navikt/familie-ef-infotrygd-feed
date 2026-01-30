@@ -21,7 +21,7 @@
         <java.version>21</java.version>
         <kotlin.version>2.3.0</kotlin.version>
         <felles-kontrakter.version>3.0_20251112142340_c5baa9c</felles-kontrakter.version>
-        <felles.version>3.20251105152539_b03ed80</felles.version>
+        <felles.version>4.20260113213435_0e5b861</felles.version>
         <springdoc.version>3.0.1</springdoc.version>
         <token-validation-spring.version>6.0.1</token-validation-spring.version>
         <spring.vault.version>4.0.0</spring.vault.version>
@@ -106,6 +106,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.vault</groupId>
             <artifactId>spring-vault-core</artifactId>
             <version>${spring.vault.version}</version>
@@ -173,12 +177,6 @@
         </dependency>
 
         <!-- Annet -->
-        <dependency>
-            <groupId>com.networknt</groupId>
-            <artifactId>json-schema-validator</artifactId>
-            <scope>test</scope>
-            <version>3.0.0</version>
-        </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
