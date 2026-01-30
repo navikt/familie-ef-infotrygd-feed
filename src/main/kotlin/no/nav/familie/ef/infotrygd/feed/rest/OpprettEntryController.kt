@@ -4,6 +4,7 @@ import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.familie.kontrakter.ef.felles.StønadType
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
 import no.nav.security.token.support.core.api.ProtectedWithClaims
+import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,10 +22,15 @@ import org.springframework.web.bind.annotation.RestController
 class OpprettEntryController(
     private val infotrygdFeedService: InfotrygdFeedService,
 ) {
+
+    private val logger = LoggerFactory.getLogger(this::class.java)
+
+
     @PostMapping("/periode")
     fun lagNyPeriodeMelding(
         @RequestBody opprettEntryDto: OpprettPeriodeHendelseDto,
     ): ResponseEntity<String> {
+        logger.info("Mottatt request for å opprette ny periode melding i feed for stønadstype ${opprettEntryDto.type}, med ${opprettEntryDto.perioder.size} perioder.")
         if (opprettEntryDto.type != StønadType.OVERGANGSSTØNAD) {
             return ResponseEntity
                 .badRequest()
