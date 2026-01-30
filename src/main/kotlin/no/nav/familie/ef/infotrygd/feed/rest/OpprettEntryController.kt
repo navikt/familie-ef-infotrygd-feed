@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(
     "/api/entry",
     consumes = [MediaType.APPLICATION_JSON_VALUE],
-    produces = [MediaType.APPLICATION_JSON_VALUE],
+    produces = [MediaType.TEXT_PLAIN_VALUE],
 )
 @ProtectedWithClaims(issuer = "azuread", claimMap = ["roles=access_as_application"])
 class OpprettEntryController(
@@ -24,13 +24,13 @@ class OpprettEntryController(
     @PostMapping("/periode")
     fun lagNyPeriodeMelding(
         @RequestBody opprettEntryDto: OpprettPeriodeHendelseDto,
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<String> {
         if (opprettEntryDto.type != StønadType.OVERGANGSSTØNAD) {
             return ResponseEntity
                 .badRequest()
                 .body("Har ikke satt opp mappinger for andre typer enn for overgangsstønad")
         }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok("OK")
     }
 }
