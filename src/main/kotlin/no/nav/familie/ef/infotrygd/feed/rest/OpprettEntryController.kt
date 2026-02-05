@@ -3,6 +3,7 @@ package no.nav.familie.ef.infotrygd.feed.rest
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.familie.kontrakter.ef.felles.StønadType
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
+import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping(
     "/api/entry",
     consumes = [MediaType.APPLICATION_JSON_VALUE],
-    produces = [MediaType.TEXT_PLAIN_VALUE],
+    produces = [MediaType.APPLICATION_JSON_VALUE],
 )
 @ProtectedWithClaims(issuer = "azuread", claimMap = ["roles=access_as_application"])
 class OpprettEntryController(
@@ -24,13 +25,13 @@ class OpprettEntryController(
     @PostMapping("/periode")
     fun lagNyPeriodeMelding(
         @RequestBody opprettEntryDto: OpprettPeriodeHendelseDto,
-    ): ResponseEntity<String> {
+    ): ResponseEntity<Ressurs<String>> {
         if (opprettEntryDto.type != StønadType.OVERGANGSSTØNAD) {
             return ResponseEntity
                 .badRequest()
-                .body("Har ikke satt opp mappinger for andre typer enn for overgangsstønad")
+                .body(Ressurs.failure("Har ikke satt opp mappinger for andre typer enn for overgangsstønad"))
         }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
-        return ResponseEntity.ok("OK")
+        return ResponseEntity.ok(Ressurs.success("OK"))
     }
 }
