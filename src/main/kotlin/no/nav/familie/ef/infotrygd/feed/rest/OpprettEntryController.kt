@@ -3,6 +3,7 @@ package no.nav.familie.ef.infotrygd.feed.rest
 import no.nav.familie.ef.infotrygd.feed.service.InfotrygdFeedService
 import no.nav.familie.kontrakter.ef.felles.StønadType
 import no.nav.familie.kontrakter.ef.infotrygd.OpprettPeriodeHendelseDto
+import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -24,13 +25,13 @@ class OpprettEntryController(
     @PostMapping("/periode")
     fun lagNyPeriodeMelding(
         @RequestBody opprettEntryDto: OpprettPeriodeHendelseDto,
-    ): ResponseEntity<Any> {
+    ): ResponseEntity<Ressurs<String>> {
         if (opprettEntryDto.type != StønadType.OVERGANGSSTØNAD) {
             return ResponseEntity
                 .badRequest()
-                .body("Har ikke satt opp mappinger for andre typer enn for overgangsstønad")
+                .body(Ressurs.failure("Har ikke satt opp mappinger for andre typer enn for overgangsstønad"))
         }
         infotrygdFeedService.opprettNyFeed(opprettEntryDto)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok(Ressurs.success("OK"))
     }
 }
